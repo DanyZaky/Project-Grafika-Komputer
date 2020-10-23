@@ -1,7 +1,7 @@
 # Project-Grafika-Komputer
-Kelas B
-
 Judul Game : 'Coming Soon'
+
+Kelas B
 
 Anggota
 - Dany Zaky Dhaifullah       192410103024
