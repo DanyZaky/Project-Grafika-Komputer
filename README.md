@@ -1,8 +1,4 @@
-# Project-Grafika-Komputer
-Judul Game : 'Coming Soon'
-
-Kelas B
-
+# Kelas B
 Anggota
 - Dany Zaky Dhaifullah       192410103024
 - Muhammad Rauf Fachruddin   192410103061
