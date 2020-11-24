@@ -32,6 +32,62 @@ void animasiApi()
     glFlush();
 }
 
+void bintang()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(182,182,183);
+    glVertex2f(180,639);
+    glVertex2f(182,639);
+    glVertex2f(182,633);
+    glVertex2f(180,633);
+
+    glVertex2f(178,637);
+    glVertex2f(178,635);
+    glVertex2f(184,637);
+    glVertex2f(184,635);
+
+    glEnd();
+    glFlush();
+}
+
+void item()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(182,182,183);
+    glVertex2f(192,607);
+    glVertex2f(173,607);
+    glVertex2f(173,623);
+    glVertex2f(192,623);
+
+    glVertex2f(175,625);
+    glVertex2f(190,625);
+    glVertex2f(190,605);
+    glVertex2f(175,605);
+
+    glVertex2f(176,628);
+    glVertex2f(176,625);
+    glVertex2f(181,628);
+    glVertex2f(181,625);
+
+    glVertex2f(181,629);
+    glVertex2f(181,627);
+    glVertex2f(188,629);
+    glVertex2f(188,626);
+
+    glVertex2f(187,626);
+    glVertex2f(187,625);
+    glVertex2f(189,626);
+    glVertex2f(189,625);
+
+    glVertex2f(186,627);
+    glVertex2f(188,627);
+    glVertex2f(186,626);
+    glVertex2f(188,626);
+
+    glEnd();
+    glFlush();
+}
+
 void mainCharacter()
 {
     glBegin(GL_QUADS);
@@ -215,7 +271,8 @@ void displayMe()
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.06,0.16,0.2,0);
     glMatrixMode(GL_MODELVIEW);
-
+    bintang();
+    item();
     glTranslatef(kananKiri,gravity,0);
     mainCharacter();
 
