@@ -236,3 +236,10 @@
 	<math.h>
 	<windows.h>
 
+1606221547 source:h:\grafkomgithub\project-grafika-komputer\project\main.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<math.h>
+	<windows.h>
+

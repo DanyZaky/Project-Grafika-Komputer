@@ -8,19 +8,6 @@ float gravity = 0;
 float kananKiri = 0;
 bool jatuh = true;
 
-void mainBackground()
-{
-    glColor3ub(16,42,52);
-    glBegin(GL_QUADS);
-
-        glVertex2f(0,0);
-        glVertex2f(0,640);
-        glVertex2f(360,640);
-        glVertex2f(360,0);
-
-    glEnd();
-    glFlush();
-}
 void animasiApi()
 {
     glBegin(GL_QUADS);
@@ -226,6 +213,7 @@ void mainCharacter()
 void displayMe()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.06,0.16,0.2,0);
     glMatrixMode(GL_MODELVIEW);
 
     glTranslatef(kananKiri,gravity,0);
@@ -248,7 +236,6 @@ void timer(int t)
 {
     if (jatuh == true)
     {
-
         gravity -= 0.3;
     }
     if (GetAsyncKeyState(VK_RIGHT))
@@ -265,7 +252,6 @@ void timer(int t)
         gravity += 6;
         kananKiri -= 2;
     }
-
     glutPostRedisplay();
     glutTimerFunc(25,timer,0);
 }
@@ -281,4 +267,3 @@ int main(int argc, char** argv)
     glutDisplayFunc(displayMe);
     glutMainLoop();
 }
-
