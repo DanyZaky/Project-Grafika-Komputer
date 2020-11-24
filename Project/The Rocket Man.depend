@@ -229,3 +229,10 @@
 1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
 	<_mingw.h>
 
+1605494711 source:c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\main.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<math.h>
+	<windows.h>
+
