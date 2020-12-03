@@ -119,6 +119,16 @@ void mainCharacterMove(){
     }
     glTranslatef(kananKiri,gravity,0);
     karakter1.mainCharacter();
+    if (GetAsyncKeyState(VK_RIGHT))
+    {
+        flip = true;
+        animasiApi();
+    }
+    if (GetAsyncKeyState(VK_LEFT))
+    {
+        flip = false;
+        animasiApi();
+    }
     glPopMatrix();
 }
 
@@ -139,17 +149,7 @@ void displayMe()
     //glPopMatrix();
 
     mainCharacterMove();
-    //KONDISI KELUARNYA API
-    if (GetAsyncKeyState(VK_RIGHT))
-    {
-        flip = true;
-        animasiApi();
-    }
-    if (GetAsyncKeyState(VK_LEFT))
-    {
-        flip = false;
-        animasiApi();
-    }
+
 }
 
 void timer(int t)
@@ -158,19 +158,24 @@ void timer(int t)
     {
         gravity -= 3;
     }
+    else
+    {
+        gravity = 0;
+    }
+
     if (GetAsyncKeyState(VK_RIGHT))
     {
         //gravity = 0;
         //kananKiri = 0;
-        gravity += 6;
-        kananKiri += 2;
+        gravity += 10;
+        kananKiri += 7;
     }
     else if (GetAsyncKeyState(VK_LEFT))
     {
         //gravity = 0;
         //kananKiri = 0;
-        gravity += 6;
-        kananKiri -= 2;
+        gravity += 10;
+        kananKiri -= 7;
     }
     glutTimerFunc(25,timer,0);
     glutPostRedisplay();
