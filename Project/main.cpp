@@ -6,8 +6,14 @@
 
 //header
 #include "karakter.h"
+#include "bintang.h"
+#include "bensin.h"
+#include "animasiapi.h"
 
 Karakter karakter1;
+Bintang bintang1;
+Bensin bensin1;
+AnimasiApi animasiapi1;
 
 float gravity = 0;
 float kananKiri = 0;
@@ -16,99 +22,6 @@ float bensinJatuh = 0;
 
 bool jatuh = true;
 bool flip = true;
-
-void traped(){
-    glBegin(GL_QUADS);
-    glColor3ub(240,141,3);
-
-        glVertex2f(0,0);
-        glVertex2f(0,20);
-        glVertex2f(20,30);
-        glVertex2f(20,0);
-    glEnd();
-    glFlush();
-}
-
-void animasiApi()
-{
-    glBegin(GL_QUADS);
-    glColor3ub(240,141,3);
-
-        glVertex2f(165,315);
-        glVertex2f(170,315);
-        glVertex2f(170,312);
-        glVertex2f(165,312);
-
-        glVertex2f(166,312);
-        glVertex2f(169,312);
-        glVertex2f(169,308);
-        glVertex2f(166,308);
-
-        glVertex2f(167,308);
-        glVertex2f(168,308);
-        glVertex2f(168,305);
-        glVertex2f(167,305);
-
-    glEnd();
-    glFlush();
-}
-
-void bintang()
-{
-    glBegin(GL_QUADS);
-    glColor3ub(182,182,183);
-    glVertex2f(180,639);
-    glVertex2f(182,639);
-    glVertex2f(182,633);
-    glVertex2f(180,633);
-
-    glVertex2f(178,637);
-    glVertex2f(178,635);
-    glVertex2f(184,637);
-    glVertex2f(184,635);
-
-    glEnd();
-    glFlush();
-}
-
-void bensin()
-{
-    glBegin(GL_QUADS);
-    glColor3ub(182,182,183);
-    glVertex2f(192,607);
-    glVertex2f(173,607);
-    glVertex2f(173,623);
-    glVertex2f(192,623);
-
-    glVertex2f(175,625);
-    glVertex2f(190,625);
-    glVertex2f(190,605);
-    glVertex2f(175,605);
-
-    glVertex2f(176,628);
-    glVertex2f(176,625);
-    glVertex2f(181,628);
-    glVertex2f(181,625);
-
-    glVertex2f(181,629);
-    glVertex2f(181,627);
-    glVertex2f(188,629);
-    glVertex2f(188,626);
-
-    glVertex2f(187,626);
-    glVertex2f(187,625);
-    glVertex2f(189,626);
-    glVertex2f(189,625);
-
-    glVertex2f(186,627);
-    glVertex2f(188,627);
-    glVertex2f(186,626);
-    glVertex2f(188,626);
-
-    glEnd();
-    glFlush();
-}
-
 
 void characterMovement(int timer)
 {
@@ -158,11 +71,11 @@ void mainCharacterMove(){
 
     if (GetAsyncKeyState(VK_RIGHT))
     {
-        animasiApi();
+        animasiapi1.animasiApi();
     }
     if (GetAsyncKeyState(VK_LEFT))
     {
-        animasiApi();
+        animasiapi1.animasiApi();
     }
     glPopMatrix();
 }
@@ -177,7 +90,7 @@ void mainBintangSpawner()
         glTranslatef(0,bintangSpawn,0);
             glPushMatrix();
             glTranslatef(0,bintangJatuh,0);
-            bintang();
+            bintang1.bintang();
             glPopMatrix();
         glPopMatrix();
         bintangSpawn += 160;
@@ -196,7 +109,7 @@ void mainBensinSpawner()
             glTranslatef(150,0,0);
             glPushMatrix();
             glTranslatef(0,bensinJatuh,0);
-            bensin();
+            bensin1.bensin();
             glPopMatrix();
             glPopMatrix();
         glPopMatrix();
