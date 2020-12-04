@@ -22,7 +22,73 @@ float bensinJatuh = 0;
 
 bool jatuh = true;
 bool flip = true;
+void enemyAobject()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(123,57,90);
+    //rambut
+    glVertex2f(-11,18);
+    glVertex2f(11,18);
+    glVertex2f(-11,14);
+    glVertex2f(11,14);
+    //rambut2
+    glVertex2f(-16,14);
+    glVertex2f(-12,14);
+    glVertex2f(-16,6);
+    glVertex2f(-12,6);
+    //jambang
+    glVertex2f(-20,10);
+    glVertex2f(-16,10);
+    glVertex2f(-20,-15);
+    glVertex2f(-16,-15);
+    //jambang2
+    glVertex2f(-16,-6);
+    glVertex2f(-12,-6);
+    glVertex2f(-16,-11);
+    glVertex2f(-12,-11);
+    //kaki
+    glVertex2f(-11,-11);
+    glVertex2f(-7,-11);
+    glVertex2f(-11,-15);
+    glVertex2f(-7,-15);
 
+    glColor3ub(176,75,135);
+    //jidat
+    glVertex2f(-11,14);
+    glVertex2f(16,14);
+    glVertex2f(-11,10);
+    glVertex2f(16,10);
+    //kanal
+    glVertex2f(11,14);
+    glVertex2f(16,14);
+    glVertex2f(11,-11);
+    glVertex2f(16,-11);
+    //kanal2
+    glVertex2f(15,10);
+    glVertex2f(20,10);
+    glVertex2f(15,-15);
+    glVertex2f(20,-15);
+    //telinga kiri
+    glVertex2f(-16,6);
+    glVertex2f(-12,6);
+    glVertex2f(-16,-6);
+    glVertex2f(-12,-6);
+    //bawah mata kiri
+    glVertex2f(-11,1);
+    glVertex2f(-7,1);
+    glVertex2f(-11,-11);
+    glVertex2f(-7,-11);
+    //tengah
+    glVertex2f(-2,14);
+    glVertex2f(2,14);
+    glVertex2f(-2,-15);
+    glVertex2f(2,-15);
+    //bawah mata kanan
+    glVertex2f(7,5);
+    glVertex2f(11,5);
+    glVertex2f(7,-15);
+    glVertex2f(11,-15);
+}
 void characterMovement(int timer)
 {
     //jatuhnya character
@@ -122,7 +188,7 @@ void displayMe()
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.06,0.16,0.2,0);
     glMatrixMode(GL_MODELVIEW);
-
+    enemyAobject();
     mainBintangSpawner();
     mainBensinSpawner();
     mainCharacterMove();

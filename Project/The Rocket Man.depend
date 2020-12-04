@@ -12,7 +12,7 @@
 	<stddef.h>
 	<GL/gl.h>
 
-903432286 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+881786480 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -233,4 +233,23 @@
 	"karakter.h"
 
 1606921854 d:\github\grafkom\project-grafika-komputer\project\karakter.h
+
+1607096817 source:c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\main.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<math.h>
+	<windows.h>
+	"karakter.h"
+	"bintang.h"
+	"bensin.h"
+	"animasiapi.h"
+
+1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\karakter.h
+
+1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bintang.h
+
+1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bensin.h
+
+1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\animasiapi.h
 
