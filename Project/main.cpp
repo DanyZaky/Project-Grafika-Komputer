@@ -4,24 +4,24 @@
 #include <math.h>
 #include <windows.h>
 
-//header
-#include "karakter.h"
-#include "bintang.h"
+//HEADER
+#include "character.h"
+#include "character-fire.h"
 #include "bensin.h"
-#include "animasiapi.h"
+#include "bintang.h"
 
-Karakter karakter1;
-Bintang bintang1;
-Bensin bensin1;
-AnimasiApi animasiapi1;
+CharacterObjectClass characterObject1;
+CharacterFireObjectClass characterFireObject1;
+BensinObjectClass bensinObject1;
+BintangObjectClass bintangObject1;
 
 float gravity = 0;
 float kananKiri = 0;
 float bintangJatuh = 0;
 float bensinJatuh = 0;
-
 bool jatuh = true;
-bool flip = true;
+bool flipped = true;
+
 void enemyAobject()
 {
     glBegin(GL_QUADS);
@@ -88,15 +88,23 @@ void enemyAobject()
     glVertex2f(11,5);
     glVertex2f(7,-15);
     glVertex2f(11,-15);
+    glEnd();
 }
+
+
 void characterMovement(int timer)
 {
+    jatuh = true;
     //jatuhnya character
     if (jatuh == true)
     {
         gravity -= 3;
     }
-
+    else if (jatuh == false)
+    {
+        gravity -=3;
+        kananKiri += 7;
+    }
     //gerak ke kanan dan kiri
     if (GetAsyncKeyState(VK_RIGHT))
     {
@@ -108,6 +116,7 @@ void characterMovement(int timer)
         gravity += 10;
         kananKiri -= 7;
     }
+
     glutTimerFunc(25,characterMovement,0);
     glutPostRedisplay();
 }
@@ -133,15 +142,41 @@ void mainCharacterMove(){
     glPushMatrix();
 
     glTranslatef(kananKiri,gravity,0);
-    karakter1.mainCharacter();
 
     if (GetAsyncKeyState(VK_RIGHT))
     {
-        animasiapi1.animasiApi();
+        flipped = true;
+
+        glPushMatrix();
+        glTranslatef(180,320,0);
+        characterFireObject1.characterFireObject();
+        glPopMatrix();
     }
-    if (GetAsyncKeyState(VK_LEFT))
+    else if (GetAsyncKeyState(VK_LEFT))
     {
-        animasiapi1.animasiApi();
+        flipped = false;
+
+        glPushMatrix();
+        glTranslatef(180,320,0);
+        glRotatef(180,0,1,0);
+        characterFireObject1.characterFireObject();
+        glPopMatrix();
+    }
+
+    if (flipped == true)
+    {
+        glPushMatrix();
+        glTranslatef(180,320,0);
+        characterObject1.characterObject();
+        glPopMatrix();
+    }
+    else if (flipped == false)
+    {
+        glPushMatrix();
+        glTranslatef(180,320,0);
+        glRotatef(180,0,1,0);
+        characterObject1.characterObject();
+        glPopMatrix();
     }
     glPopMatrix();
 }
@@ -150,16 +185,64 @@ void mainBintangSpawner()
 {
     float bintangSpawn = 0;
 
-    for (int i = 0; i<= 1000; i++)
+    for (int i = 0; i<= 10000; i++)
     {
         glPushMatrix();
         glTranslatef(0,bintangSpawn,0);
+        glPushMatrix();
+
+            float bintangPos;
+
+            if (i%9 == 0)
+            {
+                bintangPos = 148;
+            }
+            else if (i%9 == 1)
+            {
+                bintangPos = 290;
+            }
+            else if (i%9 == 2)
+            {
+                bintangPos = 105;
+            }
+            else if (i%9 == 3)
+            {
+                bintangPos = 117;
+            }
+            else if (i%9 == 4)
+            {
+                bintangPos = 269;
+            }
+            else if (i%9 == 5)
+            {
+                bintangPos = 223;
+            }
+            else if (i%9 == 6)
+            {
+                bintangPos = 135;
+            }
+            else if (i%9 == 7)
+            {
+                bintangPos = 258;
+            }
+            else if (i%9 == 8)
+            {
+                bintangPos = 56;
+            }
+            else
+            {
+                bintangPos = 305;
+            }
+
+            glTranslatef(bintangPos,0,0);
+
             glPushMatrix();
             glTranslatef(0,bintangJatuh,0);
-            bintang1.bintang();
+            bintangObject1.bintangObject();
+            glPopMatrix();
             glPopMatrix();
         glPopMatrix();
-        bintangSpawn += 160;
+        bintangSpawn += 100;
     }
 }
 
@@ -172,14 +255,63 @@ void mainBensinSpawner()
         glPushMatrix();
         glTranslatef(0,bensinSpawn,0);
             glPushMatrix();
-            glTranslatef(150,0,0);
+
+            float bensinPos;
+
+            if (i%9 == 0)
+            {
+                bensinPos = 20;
+            }
+            else if (i%9 == 1)
+            {
+                bensinPos = 312;
+            }
+            else if (i%9 == 2)
+            {
+                bensinPos = 31;
+            }
+            else if (i%9 == 3)
+            {
+                bensinPos = 326;
+            }
+            else if (i%9 == 4)
+            {
+                bensinPos = 14;
+            }
+            else if (i%9 == 5)
+            {
+                bensinPos = 339;
+            }
+            else if (i%9 == 6)
+            {
+                bensinPos = 24;
+            }
+            else if (i%9 == 7)
+            {
+                bensinPos = 324;
+            }
+            else if (i%9 == 8)
+            {
+                bensinPos = 43;
+            }
+            else
+            {
+                bensinPos = 340;
+            }
+
+            glTranslatef(bensinPos,0,0);
             glPushMatrix();
             glTranslatef(0,bensinJatuh,0);
-            bensin1.bensin();
+
+                glPushMatrix();
+                glTranslatef(0,650,0);
+                bensinObject1.bensinObject();
+                glPopMatrix();
+
             glPopMatrix();
             glPopMatrix();
         glPopMatrix();
-        bensinSpawn += 360;
+        bensinSpawn += 640*3;
     }
 }
 
@@ -188,7 +320,12 @@ void displayMe()
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.06,0.16,0.2,0);
     glMatrixMode(GL_MODELVIEW);
-    enemyAobject();
+
+    /*glPushMatrix();
+    glTranslatef(50,50,0);
+    bintangObject();
+    glPopMatrix();*/
+
     mainBintangSpawner();
     mainBensinSpawner();
     mainCharacterMove();
@@ -212,7 +349,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
     glutInitWindowPosition(0,0);
-    glutInitWindowSize(500,760);
+    glutInitWindowSize(360,640);
     glutCreateWindow("The Rocket Man");
     gluOrtho2D(0,360,0,640);
 

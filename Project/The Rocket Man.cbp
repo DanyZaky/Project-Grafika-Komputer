@@ -43,7 +43,9 @@
 			<Add directory="C:/Program Files (x86)/CodeBlocks/MinGW/lib" />
 		</Linker>
 		<Unit filename="bensin.h" />
-		<Unit filename="karakter.h" />
+		<Unit filename="bintang.h" />
+		<Unit filename="character-fire.h" />
+		<Unit filename="character.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -1,40 +1,73 @@
-class Bensin{
+class BensinObjectClass
+{
 public:
-    void bensin(){
-    glBegin(GL_QUADS);
-    glColor3ub(182,182,183);
-    glVertex2f(192,607);
-    glVertex2f(173,607);
-    glVertex2f(173,623);
-    glVertex2f(192,623);
+    void bensinObject()
+    {
+        glBegin(GL_QUADS);
+        glColor3ub(155,93,12);
 
-    glVertex2f(175,625);
-    glVertex2f(190,625);
-    glVertex2f(190,605);
-    glVertex2f(175,605);
+            glVertex2f(-9,20);
+            glVertex2f(8,20);
+            glVertex2f(8,17.5);
+            glVertex2f(-9,17.5);
 
-    glVertex2f(176,628);
-    glVertex2f(176,625);
-    glVertex2f(181,628);
-    glVertex2f(181,625);
+            glVertex2f(-9,14.5);
+            glVertex2f(-9,17.5);
+            glVertex2f(-3.5,17.5);
+            glVertex2f(-3.5,14.5);
 
-    glVertex2f(181,629);
-    glVertex2f(181,627);
-    glVertex2f(188,629);
-    glVertex2f(188,626);
+            glVertex2f(-11.5,14.5);
+            glVertex2f(-6,14.5);
+            glVertex2f(-6,12);
+            glVertex2f(-11.5,12);
 
-    glVertex2f(187,626);
-    glVertex2f(187,625);
-    glVertex2f(189,626);
-    glVertex2f(189,625);
+            glVertex2f(-14,12);
+            glVertex2f(-8.5,12);
+            glVertex2f(-8.5,-11);
+            glVertex2f(-14,-11);
 
-    glVertex2f(186,627);
-    glVertex2f(188,627);
-    glVertex2f(186,626);
-    glVertex2f(188,626);
+            glVertex2f(-11,-10);
+            glVertex2f(0,-10);
+            glVertex2f(0,-14);
+            glVertex2f(-11,-14);
 
-    glEnd();
-    glFlush();
+        glColor3ub(240,141,3);
+
+            glVertex2f(-3.5,17.5);
+            glVertex2f(-2,17.5);
+            glVertex2f(-2,14.5);
+            glVertex2f(-3.5,14.5);
+
+            glVertex2f(5,17.5);
+            glVertex2f(8,17.5);
+            glVertex2f(8,16);
+            glVertex2f(5,16);
+
+            glVertex2f(6.5,16);
+            glVertex2f(6.5,14.5);
+            glVertex2f(8,14.5);
+            glVertex2f(8,16);
+
+            glVertex2f(-6,14.5);
+            glVertex2f(-6,12);
+            glVertex2f(11,12);
+            glVertex2f(11,14.5);
+
+            glVertex2f(-8.5,12);
+            glVertex2f(-8.5,-10);
+            glVertex2f(14,-10);
+            glVertex2f(14,12);
+
+            glVertex2f(0,-10);
+            glVertex2f(0,-11);
+            glVertex2f(14,-11);
+            glVertex2f(14,-10);
+
+            glVertex2f(0,-11);
+            glVertex2f(0,-14);
+            glVertex2f(11,-14);
+            glVertex2f(11,-11);
+
+        glEnd();
     }
-
 };
