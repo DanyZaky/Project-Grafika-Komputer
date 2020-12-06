@@ -9,11 +9,13 @@
 #include "character-fire.h"
 #include "bensin.h"
 #include "bintang.h"
+#include "enemy.h"
 
 CharacterObjectClass characterObject1;
 CharacterFireObjectClass characterFireObject1;
 BensinObjectClass bensinObject1;
 BintangObjectClass bintangObject1;
+EnemyObjectClass enemyObject1;
 
 float gravity = 0;
 float kananKiri = 0;
@@ -22,6 +24,7 @@ float bensinJatuh = 0;
 bool jatuh = true;
 bool flipped = true;
 
+<<<<<<< HEAD
 void enemyAobject()
 {
     glBegin(GL_QUADS);
@@ -356,6 +359,8 @@ void orangeEnemy()
     glEnd();
 }
 
+=======
+>>>>>>> 0274bd13ef81bec6f0298951df47f71ecfad9a04
 void characterMovement(int timer)
 {
     jatuh = true;
@@ -587,7 +592,7 @@ void displayMe()
 
     glPushMatrix();
     glTranslatef(50,50,0);
-    GreenEnemy();
+    enemyAobject();
     glPopMatrix();
 
     mainBintangSpawner();
