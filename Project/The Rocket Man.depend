@@ -12,7 +12,7 @@
 	<stddef.h>
 	<GL/gl.h>
 
-903432286 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+881786480 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -237,22 +237,22 @@
 
 1607098850 d:\github\grafkom\project-grafika-komputer\project\karakter.h
 
-1607096817 source:c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\main.cpp
+1607260723 source:c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\main.cpp
 	<GL/gl.h>
 	<GL/glu.h>
 	<GL/glut.h>
 	<math.h>
 	<windows.h>
-	"karakter.h"
-	"bintang.h"
+	"character.h"
+	"character-fire.h"
 	"bensin.h"
-	"animasiapi.h"
+	"bintang.h"
 
 1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\karakter.h
 
-1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bintang.h
+1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bintang.h
 
-1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bensin.h
+1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bensin.h
 
 1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\animasiapi.h
 
@@ -267,4 +267,8 @@
 1607182435 d:\github\grafkom\project-grafika-komputer\project\character-fire.h
 
 1607180838 d:\github\grafkom\project-grafika-komputer\project\character-flipped.h
+
+1607237141 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\character.h
+
+1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\character-fire.h
 
