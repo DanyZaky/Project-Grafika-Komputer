@@ -2,54 +2,22 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="enemy.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="enemy.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-<<<<<<< HEAD
-			<Cursor1 position="3406" topLine="146" />
-=======
-			<Cursor1 position="7729" topLine="0" />
->>>>>>> 0274bd13ef81bec6f0298951df47f71ecfad9a04
+			<Cursor1 position="4906" topLine="90" />
 		</Cursor>
 		<Folding>
 			<Collapse line="4" />
-			<Collapse line="99" />
-			<Collapse line="206" />
+			<Collapse line="208" />
 		</Folding>
 	</File>
-	<File name="character-fire.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="106" topLine="0" />
+			<Cursor1 position="1028" topLine="27" />
 		</Cursor>
-	</File>
-<<<<<<< HEAD
-	<File name="character-fire.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="106" topLine="0" />
-=======
-	<File name="character.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="100" topLine="0" />
->>>>>>> 0274bd13ef81bec6f0298951df47f71ecfad9a04
-		</Cursor>
-	</File>
-	<File name="bensin.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="183" topLine="0" />
-		</Cursor>
-	</File>
-<<<<<<< HEAD
-	<File name="bintang.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-=======
-	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="515" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="bintang.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
->>>>>>> 0274bd13ef81bec6f0298951df47f71ecfad9a04
-			<Cursor1 position="403" topLine="0" />
-		</Cursor>
+		<Folding>
+			<Collapse line="117" />
+			<Collapse line="182" />
+		</Folding>
 	</File>
 </CodeBlocks_layout_file>

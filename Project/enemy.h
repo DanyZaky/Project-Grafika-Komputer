@@ -136,6 +136,7 @@ public:
         glVertex2f(-9.5,-11.5);
         glVertex2f(-16,-11.5);
 
+        glColor3ub(0,115,76);
         glVertex2f(-6,8.5);
         glVertex2f(11,8.5);
         glVertex2f(11,6);
@@ -201,9 +202,10 @@ public:
         glVertex2f(6,6);
         glVertex2f(3,6);
         glEnd();
+
     }
 
-    void enemyCobejct()
+    void enemyCobject()
     {
         glBegin(GL_QUADS);
         glColor3ub(115,51,30);
