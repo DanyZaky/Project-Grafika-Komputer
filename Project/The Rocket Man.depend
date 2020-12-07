@@ -224,7 +224,7 @@
 1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
 	<_mingw.h>
 
-1607347035 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
+1607362974 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
 	<GL/gl.h>
 	<GL/glu.h>
 	<GL/glut.h>

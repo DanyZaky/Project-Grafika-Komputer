@@ -24,27 +24,72 @@ float bensinJatuh = 0;
 bool jatuh = true;
 bool flipped = true;
 
+//COLLIDER ARRAY VARIABLE
+float charaPosX[2] = {-20,20};
+float charaPosY[2] = {-20,20};
+
+void colliderCharacter()
+{
+    glPushMatrix();
+    glTranslatef(180,320,0);
+    glBegin(GL_POLYGON);
+    glColor4ub(0,0,0,0);
+        glVertex2f(charaPosX[0],charaPosY[0]);
+        glVertex2f(charaPosX[1],charaPosY[0]);
+        glVertex2f(charaPosX[1],charaPosY[1]);
+        glVertex2f(charaPosX[0],charaPosY[1]);
+    glEnd();
+    glPopMatrix();
+}
+
 void characterMovement(int timer)
 {
     jatuh = true;
     //jatuhnya character
     if (jatuh == true)
     {
-        gravity -= 3;
+        charaPosY[0] -= 3;
+        charaPosY[1] -= 3;
 
-        if (GetAsyncKeyState(VK_RIGHT))
+        gravity -= 3;
+    }
+
+    if (GetAsyncKeyState(VK_RIGHT))
         {
-            jatuh = false;
-            gravity += 10;
-            kananKiri += 4;
+            if (charaPosX[1] <= 180)
+            {
+                charaPosX[0] += 4;
+                charaPosX[1] += 4;
+
+                kananKiri += 4;
+            }
+
+            if (charaPosY[1] <= 320)
+            {
+                charaPosY[0] += 10;
+                charaPosY[1] += 10;
+
+                gravity += 10;
+            }
         }
         else if (GetAsyncKeyState(VK_LEFT))
         {
-            jatuh = false;
-            gravity += 10;
-            kananKiri -= 4;
+            if (charaPosX[0] >= -180)
+            {
+                charaPosX[0] -= 4;
+                charaPosX[1] -= 4;
+
+                kananKiri -= 4;
+            }
+
+            if (charaPosY[1] <= 320)
+            {
+                charaPosY[0] += 10;
+                charaPosY[1] += 10;
+
+                gravity += 10;
+            }
         }
-    }
 
     glutTimerFunc(5,characterMovement,0);
     glutPostRedisplay();
@@ -68,8 +113,9 @@ void bensinMovement(int timer)
 
 void mainCharacterMove(){
 
-    glPushMatrix();
 
+    glPushMatrix();
+    colliderCharacter();
     glTranslatef(kananKiri,gravity,0);
 
     if (GetAsyncKeyState(VK_RIGHT))
@@ -257,7 +303,12 @@ void displayMe()
 
     mainBintangSpawner();
     mainBensinSpawner();
+
+    glPushMatrix();
+
+
     mainCharacterMove();
+    glPopMatrix();
 
     glFlush();
     glutSwapBuffers();
