@@ -1,3 +1,4 @@
+#include <iostream>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -17,6 +18,7 @@ BensinObjectClass bensinObject1;
 BintangObjectClass bintangObject1;
 EnemyObjectClass enemyObject1;
 
+using namespace std;
 float gravity = 0;
 float kananKiri = 0;
 float bintangJatuh = 0;
@@ -28,16 +30,33 @@ bool flipped = true;
 float charaPosX[2] = {-20,20};
 float charaPosY[2] = {-20,20};
 
+float bensinPosX[2] = {-14,14};
+float bensinPosY[2] = {-14,20};
+
 void colliderCharacter()
 {
     glPushMatrix();
     glTranslatef(180,320,0);
     glBegin(GL_POLYGON);
-    glColor4ub(0,0,0,0);
+    glColor4ub(110,110,110,100);
         glVertex2f(charaPosX[0],charaPosY[0]);
         glVertex2f(charaPosX[1],charaPosY[0]);
         glVertex2f(charaPosX[1],charaPosY[1]);
         glVertex2f(charaPosX[0],charaPosY[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderBensin()
+{
+    glPushMatrix();
+    glTranslatef(0,650,0);
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,90);
+        glVertex2f(bensinPosX[0],bensinPosY[0]);
+        glVertex2f(bensinPosX[1],bensinPosY[0]);
+        glVertex2f(bensinPosX[1],bensinPosY[1]);
+        glVertex2f(bensinPosX[0],bensinPosY[1]);
     glEnd();
     glPopMatrix();
 }
@@ -53,7 +72,7 @@ void characterMovement(int timer)
 
         gravity -= 3;
     }
-
+    //gerak character kiri kanan
     if (GetAsyncKeyState(VK_RIGHT))
         {
             if (charaPosX[1] <= 180)
@@ -90,7 +109,12 @@ void characterMovement(int timer)
                 gravity += 10;
             }
         }
-
+    //detector collider player dan collider bensin
+    if ((charaPosX[1] >= bensinPosX[0] && charaPosX[1] <= bensinPosX[1]) && (charaPosY[1] >= bensinPosY[0] && charaPosY[1] <= bensinPosY[1]))
+    {
+        //glClearColor(1.0,1.0,1.0,1.0);
+        cout<<"Bom";
+    }
     glutTimerFunc(5,characterMovement,0);
     glutPostRedisplay();
 }
@@ -106,6 +130,8 @@ void bintangMovement(int timer)
 void bensinMovement(int timer)
 {
     bensinJatuh -= 1;
+    //bensinPosY[0] -= 1;
+    //bensinPosY[1] -= 1;
 
     glutTimerFunc(25,bensinMovement,0);
     glutPostRedisplay();
@@ -224,7 +250,6 @@ void mainBintangSpawner()
 void mainBensinSpawner()
 {
     float bensinSpawn = 0;
-
     for (int i = 0; i<= 1000; i++)
     {
         glPushMatrix();
@@ -273,20 +298,20 @@ void mainBensinSpawner()
             {
                 bensinPos = 340;
             }
-
             glTranslatef(bensinPos,0,0);
             glPushMatrix();
             glTranslatef(0,bensinJatuh,0);
 
                 glPushMatrix();
                 glTranslatef(0,650,0);
+                //colliderBensin();
                 bensinObject1.bensinObject();
                 glPopMatrix();
 
             glPopMatrix();
             glPopMatrix();
         glPopMatrix();
-        bensinSpawn += 640*3;
+        bensinSpawn += 640;
     }
 }
 
@@ -303,7 +328,7 @@ void displayMe()
 
     mainBintangSpawner();
     mainBensinSpawner();
-
+    colliderBensin();
     glPushMatrix();
 
 
