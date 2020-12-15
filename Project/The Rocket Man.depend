@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1607958643 source:c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\main.cpp
+1608006706 source:c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\main.cpp
 	<iostream>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -281,13 +281,13 @@
 
 1607347052 d:\github\grafkom\project-grafika-komputer\project\enemy.h
 
-1607948376 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\character.h
+1608002278 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\character.h
 
-1607948376 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\character-fire.h
+1607960291 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\character-fire.h
 
-1607948376 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\bensin.h
+1608004087 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\bensin.h
 
-1607948376 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\bintang.h
+1607960291 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\bintang.h
 
-1607948376 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\enemy.h
+1607960291 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\enemy.h
 
