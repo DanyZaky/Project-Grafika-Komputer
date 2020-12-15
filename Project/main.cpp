@@ -30,11 +30,8 @@ bool flipped = true;
 float charaPosX[2] = {160,200};
 float charaPosY[2] = {340,300};
 
-float bensinPosX[2] = {-14,14};//28
-float bensinPosY[2] = {-14,20};//34
-
-float posXben[2] = {40,54};
-float posYben[2] = {620,606};
+float posXben[2] = {20,48};
+float posYben[2] = {660,626};
 
 void colliderCharacter()
 {
@@ -53,13 +50,12 @@ void colliderCharacter()
 void colliderBensin()
 {
     glPushMatrix();
-    //glTranslatef(180,320,0);
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,90);
-        glVertex2f(bensinPosX[0],bensinPosY[0]);
-        glVertex2f(bensinPosX[1],bensinPosY[0]);
-        glVertex2f(bensinPosX[1],bensinPosY[1]);
-        glVertex2f(bensinPosX[0],bensinPosY[1]);
+    glColor4ub(255,255,255,100);
+        glVertex2f(posXben[0],posYben[0]);
+        glVertex2f(posXben[1],posYben[0]);
+        glVertex2f(posXben[1],posYben[1]);
+        glVertex2f(posXben[0],posYben[1]);
     glEnd();
     glPopMatrix();
 }
@@ -119,6 +115,7 @@ void characterMovement(int timer)
 
 void bintangMovement(int timer)
 {
+    //bintang move down
     bintangJatuh -= 1;
 
     glutTimerFunc(25,bintangMovement,0);
@@ -127,9 +124,22 @@ void bintangMovement(int timer)
 
 void bensinMovement(int timer)
 {
+    //object move down
     bensinJatuh -= 1;
-    //bensinPosY[0] -= 1;
-    //bensinPosY[1] -= 1;
+    //collider move down
+    posYben[0] -= 1;
+    posYben[1] -= 1;
+
+    //collision collider bensin to collider character
+    if (
+        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
+        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
+        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[1] <= posYben[1] && charaPosY[1] >= posYben[1])) ||
+        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
+        )
+    {
+        cout<<" BOM ";
+    }
 
     glutTimerFunc(25,bensinMovement,0);
     glutPostRedisplay();
@@ -257,7 +267,7 @@ void mainBensinSpawner()
 
             if (i%9 == 0)
             {
-                bensinPos = 20;
+                bensinPos = 34;
             }
             else if (i%9 == 1)
             {
@@ -300,8 +310,7 @@ void mainBensinSpawner()
             glTranslatef(0,bensinJatuh,0);
 
                 glPushMatrix();
-                glTranslatef(0,650,0);
-                colliderBensin();
+                glTranslatef(0,640,0);
                 bensinObject1.bensinObject();
                 glPopMatrix();
 
@@ -312,21 +321,17 @@ void mainBensinSpawner()
     }
 }
 
-void colliderBensinMovement()
+void mainBensinColliderSpawner()
 {
-    glPushMatrix();
-
-    posYben[0] -= 1; //620
-    posYben[1] -= 1; //606
-
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
-        glVertex2f(posXben[0],posYben[0]);
-        glVertex2f(posXben[1],posYben[0]);
-        glVertex2f(posXben[1],posYben[1]);
-        glVertex2f(posXben[0],posYben[1]);
-    glEnd();
-    glPopMatrix();
+    float bensinColliderSpawn;
+    for (int i = 0; i<= 1000; i++)
+    {
+        glPushMatrix();
+        glTranslatef(0,bensinColliderSpawn,0);
+        colliderBensin();
+        glPopMatrix();
+        bensinColliderSpawn += 50;
+    }
 }
 
 void displayMe()
@@ -342,27 +347,14 @@ void displayMe()
     colliderCharacter();
 
     mainBintangSpawner();
-    mainBensinSpawner();
-    colliderBensinMovement();
-
-    //cout << "pos chara =" <<charaPosY[0];
-    //cout<< "pos ben =" <<posYben[0] ;
-    //detector collider player dan collider bensin
-    if (
-        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
-        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
-        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[1] <= posYben[1] && charaPosY[1] >= posYben[1])) ||
-        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
-        )
-    {
-        cout<<" BOM ";
-    }
-
-    //colliderBensin();
-    glPushMatrix();
-
 
     colliderCharacter();
+
+    mainBensinColliderSpawner();
+    mainBensinSpawner();
+
+    glPushMatrix();
+
     mainCharacterMove();
     glPopMatrix();
 
