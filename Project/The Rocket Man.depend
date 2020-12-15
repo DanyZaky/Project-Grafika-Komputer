@@ -291,3 +291,26 @@
 
 1607960291 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\enemy.h
 
+1608019005 source:d:\github\grafkom\new folder (2)\project-grafika-komputer\project\main.cpp
+	<iostream>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<math.h>
+	<windows.h>
+	"character.h"
+	"character-fire.h"
+	"bensin.h"
+	"bintang.h"
+	"enemy.h"
+
+1608018940 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\character.h
+
+1608018940 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\character-fire.h
+
+1608019031 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\bensin.h
+
+1608018940 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\bintang.h
+
+1608018940 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\enemy.h
+

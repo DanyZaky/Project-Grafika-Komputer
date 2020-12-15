@@ -27,14 +27,14 @@ bool jatuh = true;
 bool flipped = true;
 
 //COLLIDER ARRAY VARIABLE
-float charaPosX[2] = {-20,20};
-float charaPosY[2] = {-20,20};
-
-//float bensinPosX[2] = {160,188};//28
-//float bensinPosY[2] = {320,354};//34
+float charaPosX[2] = {160,200};
+float charaPosY[2] = {340,300};
 
 float bensinPosX[2] = {-14,14};//28
 float bensinPosY[2] = {-14,20};//34
+
+float posXben[2] = {40,54};
+float posYben[2] = {620,606};
 
 void colliderCharacter()
 {
@@ -86,7 +86,7 @@ void characterMovement(int timer)
                 kananKiri += 4;
             }
 
-            if (charaPosY[1] <= 640)
+            if (charaPosY[0] <= 640)
             {
                 charaPosY[0] += 10;
                 charaPosY[1] += 10;
@@ -104,7 +104,7 @@ void characterMovement(int timer)
                 kananKiri -= 4;
             }
 
-            if (charaPosY[1] >= 0)
+            if (charaPosY[0] <= 640)
             {
                 charaPosY[0] += 10;
                 charaPosY[1] += 10;
@@ -112,12 +112,7 @@ void characterMovement(int timer)
                 gravity += 10;
             }
         }
-//    detector collider player dan collider bensin
-    if ((charaPosX[0] >= bensinObject1.bensinPosX[0] && charaPosX[0] <= bensinObject1.bensinPosX[13]) && (charaPosY[0] >= bensinObject1.bensinPosY[0] && charaPosY[0] <= bensinObject1.bensinPosY[7]))
-    {
-        glClearColor(1.0,1.0,1.0,1.0);
-        cout<<"Bom";
-    }
+
     glutTimerFunc(5,characterMovement,0);
     glutPostRedisplay();
 }
@@ -142,17 +137,16 @@ void bensinMovement(int timer)
 
 void mainCharacterMove(){
 
-
     glPushMatrix();
-    colliderCharacter();
-    //glTranslatef(kananKiri,gravity,0);
+
+    glTranslated(kananKiri,gravity,0);
 
     if (GetAsyncKeyState(VK_RIGHT))
     {
         flipped = true;
 
         glPushMatrix();
-        //glTranslatef(180,320,0);
+        glTranslatef(180,320,0);
         characterFireObject1.characterFireObject();
         glPopMatrix();
     }
@@ -161,7 +155,7 @@ void mainCharacterMove(){
         flipped = false;
 
         glPushMatrix();
-        //glTranslatef(180,320,0);
+        glTranslatef(180,320,0);
         glRotatef(180,0,1,0);
         characterFireObject1.characterFireObject();
         glPopMatrix();
@@ -170,14 +164,14 @@ void mainCharacterMove(){
     if (flipped == true)
     {
         glPushMatrix();
-        //glTranslatef(180,320,0);
+        glTranslatef(180,320,0);
         characterObject1.characterObject();
         glPopMatrix();
     }
     else if (flipped == false)
     {
         glPushMatrix();
-        //glTranslatef(180,320,0);
+        glTranslatef(180,320,0);
         glRotatef(180,0,1,0);
         characterObject1.characterObject();
         glPopMatrix();
@@ -250,104 +244,90 @@ void mainBintangSpawner()
     }
 }
 
-//void mainBensinSpawner()
-//{
-//    float bensinSpawn = 0;
-//    for (int i = 0; i<= 1000; i++)
-//    {
-//        glPushMatrix();
-//        //glTranslatef(0,bensinSpawn,0);
-//
-//            glPushMatrix();
-//
-//            float bensinPos;
-//
-//            if (i%9 == 0)
-//            {
-//                bensinPos = 20;
-//            }
-//            else if (i%9 == 1)
-//            {
-//                bensinPos = 312;
-//            }
-//            else if (i%9 == 2)
-//            {
-//                bensinPos = 31;
-//            }
-//            else if (i%9 == 3)
-//            {
-//                bensinPos = 326;
-//            }
-//            else if (i%9 == 4)
-//            {
-//                bensinPos = 14;
-//            }
-//            else if (i%9 == 5)
-//            {
-//                bensinPos = 339;
-//            }
-//            else if (i%9 == 6)
-//            {
-//                bensinPos = 24;
-//            }
-//            else if (i%9 == 7)
-//            {
-//                bensinPos = 324;
-//            }
-//            else if (i%9 == 8)
-//            {
-//                bensinPos = 43;
-//            }
-//            else
-//            {
-//                bensinPos = 340;
-//            }
-//            //glTranslatef(bensinPos,0,0);
-//            bensinObject1.bensinPosX[0] += bensinPos;
-//            bensinObject1.bensinPosX[1] += bensinPos;
-//            bensinObject1.bensinPosX[2] += bensinPos;
-//            bensinObject1.bensinPosX[3] += bensinPos;
-//            bensinObject1.bensinPosX[4] += bensinPos;
-//            bensinObject1.bensinPosX[5] += bensinPos;
-//            bensinObject1.bensinPosX[6] += bensinPos;
-//            bensinObject1.bensinPosX[7] += bensinPos;
-//            bensinObject1.bensinPosX[8] += bensinPos;
-//            bensinObject1.bensinPosX[9] += bensinPos;
-//            bensinObject1.bensinPosX[10] += bensinPos;
-//            bensinObject1.bensinPosX[11] += bensinPos;
-//            bensinObject1.bensinPosX[12] += bensinPos;
-//            bensinObject1.bensinPosX[13] += bensinPos;
-//            glPushMatrix();
-//            //glTranslatef(0,bensinJatuh,0);
-//                bensinObject1.bensinPosY[0] += 650;
-//                bensinObject1.bensinPosY[1] += 650;
-//                bensinObject1.bensinPosY[2] += 650;
-//                bensinObject1.bensinPosY[3] += 650;
-//                bensinObject1.bensinPosY[4] += 650;
-//                bensinObject1.bensinPosY[5] += 650;
-//                bensinObject1.bensinPosY[6] += 650;
-//                bensinObject1.bensinPosY[7] += 650;
-//
-//                glPushMatrix();
-//                //glTranslatef(0,650,0);
-//                colliderBensin();
-//                bensinObject1.bensinObject();
-//                glPopMatrix();
-//
-//            glPopMatrix();
-//            glPopMatrix();
-//        glPopMatrix();
-//        bensinObject1.bensinPosY[0] += bensinSpawn;
-//        bensinObject1.bensinPosY[1] += bensinSpawn;
-//        bensinObject1.bensinPosY[2] += bensinSpawn;
-//        bensinObject1.bensinPosY[3] += bensinSpawn;
-//        bensinObject1.bensinPosY[4] += bensinSpawn;
-//        bensinObject1.bensinPosY[5] += bensinSpawn;
-//        bensinObject1.bensinPosY[6] += bensinSpawn;
-//        bensinObject1.bensinPosY[7] += bensinSpawn;
-//        bensinSpawn += 640;
-//    }
-//}
+void mainBensinSpawner()
+{
+    float bensinSpawn = 0;
+    for (int i = 0; i<= 1000; i++)
+    {
+        glPushMatrix();
+        glTranslatef(0,bensinSpawn,0);
+            glPushMatrix();
+
+            float bensinPos;
+
+            if (i%9 == 0)
+            {
+                bensinPos = 20;
+            }
+            else if (i%9 == 1)
+            {
+                bensinPos = 312;
+            }
+            else if (i%9 == 2)
+            {
+                bensinPos = 31;
+            }
+            else if (i%9 == 3)
+            {
+                bensinPos = 326;
+            }
+            else if (i%9 == 4)
+            {
+                bensinPos = 14;
+            }
+            else if (i%9 == 5)
+            {
+                bensinPos = 339;
+            }
+            else if (i%9 == 6)
+            {
+                bensinPos = 24;
+            }
+            else if (i%9 == 7)
+            {
+                bensinPos = 324;
+            }
+            else if (i%9 == 8)
+            {
+                bensinPos = 43;
+            }
+            else
+            {
+                bensinPos = 340;
+            }
+            glTranslatef(bensinPos,0,0);
+            glPushMatrix();
+            glTranslatef(0,bensinJatuh,0);
+
+                glPushMatrix();
+                glTranslatef(0,650,0);
+                colliderBensin();
+                bensinObject1.bensinObject();
+                glPopMatrix();
+
+            glPopMatrix();
+            glPopMatrix();
+        glPopMatrix();
+        bensinSpawn += 640;
+    }
+}
+
+void colliderBensinMovement()
+{
+    glPushMatrix();
+
+    posYben[0] -= 1; //620
+    posYben[1] -= 1; //606
+
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXben[0],posYben[0]);
+        glVertex2f(posXben[1],posYben[0]);
+        glVertex2f(posXben[1],posYben[1]);
+        glVertex2f(posXben[0],posYben[1]);
+    glEnd();
+    glPopMatrix();
+}
 
 void displayMe()
 {
@@ -359,16 +339,30 @@ void displayMe()
     glTranslatef(50,50,0);
     enemyObject1.enemyBobject();
     glPopMatrix();
+    colliderCharacter();
 
     mainBintangSpawner();
-    //mainBensinSpawner();
+    mainBensinSpawner();
+    colliderBensinMovement();
+
+    //cout << "pos chara =" <<charaPosY[0];
+    //cout<< "pos ben =" <<posYben[0] ;
+    //detector collider player dan collider bensin
+    if (
+        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
+        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
+        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[1] <= posYben[1] && charaPosY[1] >= posYben[1])) ||
+        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
+        )
+    {
+        cout<<" BOM ";
+    }
+
     //colliderBensin();
     glPushMatrix();
 
-    bensinObject1.bensinObject();
-    glPopMatrix();
-    glPushMatrix();
 
+    colliderCharacter();
     mainCharacterMove();
     glPopMatrix();
 
