@@ -1,10 +1,11 @@
 class BensinObjectClass
 {
 public:
+    float opacity = 255;
     void bensinObject()
     {
         glBegin(GL_QUADS);
-        glColor3ub(155,93,12);
+        glColor4ub(155,93,12,opacity);
 
             glVertex2f(-9,20);
             glVertex2f(8,20);
@@ -31,7 +32,7 @@ public:
             glVertex2f(0,-14);
             glVertex2f(-11,-14);
 
-        glColor3ub(240,141,3);
+        glColor4ub(240,141,3,opacity);
 
             glVertex2f(-3.5,17.5);
             glVertex2f(-2,17.5);
