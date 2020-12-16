@@ -23,22 +23,25 @@ float gravity = 0;
 float kananKiri = 0;
 float bintangJatuh = 0;
 float bensinJatuh = 0;
+
 bool jatuh = true;
 bool flipped = true;
+bool destroyBensin = false;
 
 //COLLIDER ARRAY VARIABLE
 float charaPosX[2] = {160,200};
 float charaPosY[2] = {340,300};
 
-float posXben[2] = {20,48};
+float posXben[2];
+float posXben2[2];
 float posYben[2] = {660,626};
+float posYben2[2] = {660+640,626+640};
 
 void colliderCharacter()
 {
     glPushMatrix();
-    //glTranslatef(180,320,0);
     glBegin(GL_POLYGON);
-    glColor4ub(110,110,110,100);
+    glColor4ub(110,110,110,0);
         glVertex2f(charaPosX[0],charaPosY[0]);
         glVertex2f(charaPosX[1],charaPosY[0]);
         glVertex2f(charaPosX[1],charaPosY[1]);
@@ -51,11 +54,24 @@ void colliderBensin()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,100);
+    glColor4ub(255,255,255,110);
         glVertex2f(posXben[0],posYben[0]);
         glVertex2f(posXben[1],posYben[0]);
         glVertex2f(posXben[1],posYben[1]);
         glVertex2f(posXben[0],posYben[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderBensin2()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,110);
+        glVertex2f(posXben2[0],posYben2[0]);
+        glVertex2f(posXben2[1],posYben2[0]);
+        glVertex2f(posXben2[1],posYben2[1]);
+        glVertex2f(posXben2[0],posYben2[1]);
     glEnd();
     glPopMatrix();
 }
@@ -124,22 +140,17 @@ void bintangMovement(int timer)
 
 void bensinMovement(int timer)
 {
+    float gravityBensin = 1;
     //object move down
-    bensinJatuh -= 1;
+    bensinJatuh -= gravityBensin;
     //collider move down
-    posYben[0] -= 1;
-    posYben[1] -= 1;
+    posYben[0] -= gravityBensin;
+    posYben[1] -= gravityBensin;
+
+    posYben2[0] -= gravityBensin;
+    posYben2[1] -= gravityBensin;
 
     //collision collider bensin to collider character
-    if (
-        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
-        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
-        ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[1] <= posYben[1] && charaPosY[1] >= posYben[1])) ||
-        ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
-        )
-    {
-        cout<<" BOM ";
-    }
 
     glutTimerFunc(25,bensinMovement,0);
     glutPostRedisplay();
@@ -265,45 +276,13 @@ void mainBensinSpawner()
 
             float bensinPos;
 
-            if (i%9 == 0)
+            if (i%2 == 0)
             {
                 bensinPos = 34;
             }
-            else if (i%9 == 1)
-            {
-                bensinPos = 312;
-            }
-            else if (i%9 == 2)
-            {
-                bensinPos = 31;
-            }
-            else if (i%9 == 3)
-            {
-                bensinPos = 326;
-            }
-            else if (i%9 == 4)
-            {
-                bensinPos = 14;
-            }
-            else if (i%9 == 5)
-            {
-                bensinPos = 339;
-            }
-            else if (i%9 == 6)
-            {
-                bensinPos = 24;
-            }
-            else if (i%9 == 7)
+            else if (i%2 == 1)
             {
                 bensinPos = 324;
-            }
-            else if (i%9 == 8)
-            {
-                bensinPos = 43;
-            }
-            else
-            {
-                bensinPos = 340;
             }
             glTranslatef(bensinPos,0,0);
             glPushMatrix();
@@ -323,14 +302,54 @@ void mainBensinSpawner()
 
 void mainBensinColliderSpawner()
 {
-    float bensinColliderSpawn;
-    for (int i = 0; i<= 1000; i++)
+    //COLLIDER BENSIN KIRI
+    posXben[0] = 20;
+    posXben[1] = 48;
+    colliderBensin();
+
+    if (posYben[0] <= 17)
     {
-        glPushMatrix();
-        glTranslatef(0,bensinColliderSpawn,0);
-        colliderBensin();
-        glPopMatrix();
-        bensinColliderSpawn += 50;
+        posYben[0] += 640*2;
+        posYben[1] += 640*2;
+    }
+    //COLLIDER BENSIN KANAN
+    posXben2[0] = 310;
+    posXben2[1] = 338;
+    colliderBensin2();
+
+    if (posYben2[0] <= 17)
+    {
+        posYben2[0] += 640*2;
+        posYben2[1] += 640*2;
+    }
+
+    //COLIISON COLIIDER BENSIN TO COLLIDER CHARACTER
+    if (
+            ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
+            ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
+            ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[1] <= posYben[1] && charaPosY[1] >= posYben[1])) ||
+            ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
+            )
+    {
+        cout<<" BOM ";
+//        destroyBensin = true;
+//        if (destroyBensin == true)
+//        {
+//                //destroyBensin = false;
+//            posXben[0] -= 100;
+//            posXben[1] -= 100;
+//        }
+    }
+
+    if (
+            ((charaPosX[0] >= posXben2[0] && charaPosX[0] <= posXben2[1]) && (charaPosY[0] <= posYben2[0] && charaPosY[0] >= posYben2[1])) ||
+            ((charaPosX[1] >= posXben2[0] && charaPosX[1] <= posXben2[1]) && (charaPosY[0] <= posYben2[0] && charaPosY[0] >= posYben2[1])) ||
+            ((charaPosX[1] >= posXben2[0] && charaPosX[1] <= posXben2[1]) && (charaPosY[1] <= posYben2[1] && charaPosY[1] >= posYben2[1])) ||
+            ((charaPosX[0] >= posXben2[0] && charaPosX[0] <= posXben2[1]) && (charaPosY[1] <= posYben2[0] && charaPosY[1] >= posYben2[1]))
+            )
+    {
+        cout<<" BOM ";
+//        destroyBensin = true;
     }
 }
 
