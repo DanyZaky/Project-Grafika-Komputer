@@ -59,7 +59,7 @@ void particleEffectBensin()
     glPushMatrix();
     glTranslatef(20,20,0);
     glBegin(GL_QUADS);
-    glColor4ub(255,255,255,opacityParticle);
+    glColor4ub(240,141,3,opacityParticle);
         glVertex2f(2,2);
         glVertex2f(2,-2);
         glVertex2f(-2,-2);
@@ -628,6 +628,8 @@ void mainBensinColliderSpawner()
             ((charaPosX[0] >= posXben2[0] && charaPosX[0] <= posXben2[1]) && (charaPosY[1] <= posYben2[0] && charaPosY[1] >= posYben2[1]))
             )
     {
+        particleMuncul = true;
+
         if (destroyBensin2 == false)
         {
             destroyBensin2 = true;
@@ -645,8 +647,8 @@ void mainBensinColliderSpawner()
     {
         ms = 0.5;
 
-        float posX_particle = (((posXben[1] - posXben[0]) / 2) + posXben[0]);
-        float posY_particle = (((posYben[0] - posYben[1]) / 2) + posYben[1]);
+        float posX_particle = posXben[0]-10;
+        float posY_particle = posYben[1];
 
         glPushMatrix();
         glTranslatef(posX_particle,posY_particle,0);
@@ -655,13 +657,18 @@ void mainBensinColliderSpawner()
     }
     else if (particleMuncul == false)
     {
+        particleAtas = 0;
+        particleBawah = 0;
+        particleKanan = 0;
+        particleKiri = 0;
+        opacityParticle = 255;
+
         ms = 0;
     }
 
     if (opacityParticle <= 0)
     {
         particleMuncul = false;
-
     }
 
 }
