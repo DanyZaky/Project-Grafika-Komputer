@@ -18,7 +18,7 @@
 	<stddef.h>
 	<GL/gl.h>
 
-903432286 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+881786480 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -245,7 +245,8 @@
 
 1607098850 d:\github\grafkom\project-grafika-komputer\project\karakter.h
 
-1607260723 source:c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\main.cpp
+1608185706 source:c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\main.cpp
+	<iostream>
 	<GL/gl.h>
 	<GL/glu.h>
 	<GL/glut.h>
@@ -255,12 +256,13 @@
 	"character-fire.h"
 	"bensin.h"
 	"bintang.h"
+	"enemy.h"
 
 1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\karakter.h
 
 1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bintang.h
 
-1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bensin.h
+1608183314 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\bensin.h
 
 1607089308 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\animasiapi.h
 
@@ -314,4 +316,6 @@
 1608018940 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\bintang.h
 
 1608018940 d:\github\grafkom\new folder (2)\project-grafika-komputer\project\enemy.h
+
+1608183314 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\enemy.h
 

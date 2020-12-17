@@ -17,7 +17,8 @@ CharacterFireObjectClass characterFireObject1;
 BensinObjectClass bensinObject1;
 BintangObjectClass bintangObject1;
 EnemyObjectClass enemyObject1;
-
+bool bensinMembesar=false;
+float bensinScale = 1;
 float bensin = 100;
 
 using namespace std;
@@ -390,6 +391,7 @@ void mainBintangSpawner()
 
 void mainBensinSpawner()
 {
+
     float bensinSpawn = 0;
     for (int i = 0; i<= 1000; i++)
     {
@@ -411,9 +413,13 @@ void mainBensinSpawner()
             glPushMatrix();
             glTranslatef(0,bensinJatuh,0);
 
+
                 glPushMatrix();
                 glTranslatef(0,640,0);
+                glPushMatrix();
+                glScalef(bensinScale,bensinScale,0);
                 bensinObject1.bensinObject();
+                glPopMatrix();
                 glPopMatrix();
 
             glPopMatrix();
@@ -456,6 +462,27 @@ void enemyA_Spawner() //damage high
         glPopMatrix();
         enemyA_Spawn += 740;
     }
+}
+
+void animasiBensin(int timer){
+    if(bensinScale >= 1){
+       bensinMembesar = false;
+    }
+    else if (bensinScale <= 0.8)
+    {
+       bensinMembesar = true;
+    }
+
+    if (bensinMembesar == false)
+    {
+       bensinScale -= 0.02;
+    }
+    else if (bensinMembesar == true)
+    {
+        bensinScale += 0.02;
+    }
+    glutTimerFunc(50,animasiBensin,0);
+    glutPostRedisplay();
 }
 
 void enemyB_Spawner() // damage low
@@ -618,6 +645,8 @@ void displayMe()
     mainBensinColliderSpawner();
     mainBensinSpawner();
 
+
+
     colliderCharacter();
     mainCharacterMove();
 
@@ -653,6 +682,7 @@ int main(int argc, char** argv)
     glutTimerFunc(1,enemyB_Movement,0);
     glutTimerFunc(1,enemyC_Movement,0);
     glutTimerFunc(1,particleEffectBensinTimer,0);
+    glutTimerFunc(1,animasiBensin,0);
 
     myinit();
     glutMainLoop();
