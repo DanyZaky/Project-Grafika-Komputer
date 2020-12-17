@@ -17,8 +17,7 @@ CharacterFireObjectClass characterFireObject1;
 BensinObjectClass bensinObject1;
 BintangObjectClass bintangObject1;
 EnemyObjectClass enemyObject1;
-bool bensinMembesar=false;
-float bensinScale = 1;
+
 float bensin = 100;
 
 using namespace std;
@@ -35,11 +34,16 @@ float particleBawah;
 float particleKanan;
 float particleKiri;
 float opacityParticle = 255;
+bool particleMuncul = false;
+float ms;
 
 bool jatuh = true;
 bool flipped = true;
 bool destroyBensin = false;
 bool destroyBensin2 = false;
+
+bool bensinMembesar = false;
+float bensinScale = 1;
 
 //COLLIDER ARRAY VARIABLE
 float charaPosX[2] = {160,200};
@@ -109,8 +113,6 @@ void particleEffectBensinSpawner()
 
 void particleEffectBensinTimer(int timer)
 {
-    float ms = 0.5;
-
     particleAtas += ms;
     particleBawah -= ms;
     particleKanan += ms;
@@ -251,7 +253,7 @@ void bensinMovement(int timer)
 
 void enemyA_Movement(int timer)
 {
-    float gravityEnemyA = 1;
+    float gravityEnemyA = 1.5;
 
     enemyA_jatuh -= gravityEnemyA;
 
@@ -271,11 +273,33 @@ void enemyB_Movement(int timer)
 
 void enemyC_Movement(int timer)
 {
-    float gravityEnemyC = 1;
+    float gravityEnemyC = 1.25;
 
     enemyC_jatuh -= gravityEnemyC;
 
     glutTimerFunc(25,enemyC_Movement,0);
+    glutPostRedisplay();
+}
+
+void animasiBensin(int timer)
+{
+    if(bensinScale >= 1){
+       bensinMembesar = false;
+    }
+    else if (bensinScale <= 0.8)
+    {
+       bensinMembesar = true;
+    }
+
+    if (bensinMembesar == false)
+    {
+       bensinScale -= 0.02;
+    }
+    else if (bensinMembesar == true)
+    {
+        bensinScale += 0.02;
+    }
+    glutTimerFunc(50,animasiBensin,0);
     glutPostRedisplay();
 }
 
@@ -454,7 +478,10 @@ void enemyA_Spawner() //damage high
 
                 glPushMatrix();
                 glTranslatef(0,840,0);
+                glPushMatrix();
+                glScalef(bensinScale,bensinScale,0);
                 enemyObject1.enemyAobject();
+                glPopMatrix();
                 glPopMatrix();
 
             glPopMatrix();
@@ -462,27 +489,6 @@ void enemyA_Spawner() //damage high
         glPopMatrix();
         enemyA_Spawn += 740;
     }
-}
-
-void animasiBensin(int timer){
-    if(bensinScale >= 1){
-       bensinMembesar = false;
-    }
-    else if (bensinScale <= 0.8)
-    {
-       bensinMembesar = true;
-    }
-
-    if (bensinMembesar == false)
-    {
-       bensinScale -= 0.02;
-    }
-    else if (bensinMembesar == true)
-    {
-        bensinScale += 0.02;
-    }
-    glutTimerFunc(50,animasiBensin,0);
-    glutPostRedisplay();
 }
 
 void enemyB_Spawner() // damage low
@@ -514,7 +520,10 @@ void enemyB_Spawner() // damage low
 
                 glPushMatrix();
                 glTranslatef(0,500,0);
+                glPushMatrix();
+                glScalef(bensinScale,bensinScale,0);
                 enemyObject1.enemyBobject();
+                glPopMatrix();
                 glPopMatrix();
 
             glPopMatrix();
@@ -549,7 +558,10 @@ void enemyC_Spawner() // damage mid
 
                 glPushMatrix();
                 glTranslatef(0,640,0);
+                glPushMatrix();
+                glScalef(bensinScale,bensinScale,0);
                 enemyObject1.enemyCobject();
+                glPopMatrix();
                 glPopMatrix();
 
             glPopMatrix();
@@ -594,6 +606,8 @@ void mainBensinColliderSpawner()
             ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
             )
     {
+        particleMuncul = true;
+
         if (destroyBensin == false)
         {
             destroyBensin = true;
@@ -626,6 +640,30 @@ void mainBensinColliderSpawner()
             bensinObject1.opacity = 0;
         }
     }
+
+    if (particleMuncul == true)
+    {
+        ms = 0.5;
+
+        float posX_particle = (((posXben[1] - posXben[0]) / 2) + posXben[0]);
+        float posY_particle = (((posYben[0] - posYben[1]) / 2) + posYben[1]);
+
+        glPushMatrix();
+        glTranslatef(posX_particle,posY_particle,0);
+        particleEffectBensinSpawner();
+        glPopMatrix();
+    }
+    else if (particleMuncul == false)
+    {
+        ms = 0;
+    }
+
+    if (opacityParticle <= 0)
+    {
+        particleMuncul = false;
+
+    }
+
 }
 
 void displayMe()
@@ -633,8 +671,6 @@ void displayMe()
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.06,0.16,0.2,0);
     glMatrixMode(GL_MODELVIEW);
-
-    particleEffectBensinSpawner();
 
     enemyA_Spawner();
     enemyB_Spawner();
@@ -644,8 +680,6 @@ void displayMe()
 
     mainBensinColliderSpawner();
     mainBensinSpawner();
-
-
 
     colliderCharacter();
     mainCharacterMove();
