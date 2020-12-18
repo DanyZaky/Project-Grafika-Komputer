@@ -37,6 +37,14 @@ float opacityParticle = 255;
 bool particleMuncul = false;
 float ms;
 
+float particleAtas2;
+float particleBawah2;
+float particleKanan2;
+float particleKiri2;
+float opacityParticle2 = 255;
+bool particleMuncul2 = false;
+float ms2;
+
 bool jatuh = true;
 bool flipped = true;
 bool destroyBensin = false;
@@ -68,8 +76,23 @@ void particleEffectBensin()
     glPopMatrix();
 }
 
+void particleEffectBensin2()
+{
+    glPushMatrix();
+    glTranslatef(20,20,0);
+    glBegin(GL_QUADS);
+    glColor4ub(240,141,3,opacityParticle2);
+        glVertex2f(2,2);
+        glVertex2f(2,-2);
+        glVertex2f(-2,-2);
+        glVertex2f(-2,2);
+    glEnd();
+    glPopMatrix();
+}
+
 void particleEffectBensinSpawner()
 {
+
     glPushMatrix();
     glTranslatef(0,particleAtas,0);
     particleEffectBensin();
@@ -110,6 +133,48 @@ void particleEffectBensinSpawner()
     particleEffectBensin();
     glPopMatrix();
 }
+void particleEffectBensinSpawner2()
+{
+    glPushMatrix();
+    glTranslatef(0,particleAtas2,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0,particleBawah2,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(particleKanan2,0,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(particleKiri2,0,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(particleKanan2,particleAtas2,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(particleKiri2,particleAtas2,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(particleKanan2,particleBawah2,0);
+    particleEffectBensin2();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(particleKiri2,particleBawah2,0);
+    particleEffectBensin2();
+    glPopMatrix();
+}
 
 void particleEffectBensinTimer(int timer)
 {
@@ -121,6 +186,19 @@ void particleEffectBensinTimer(int timer)
     opacityParticle -= 3.5;
 
     glutTimerFunc(50,particleEffectBensinTimer,0);
+    glutPostRedisplay();
+}
+
+void particleEffectBensinTimer2(int timer)
+{
+    particleAtas2 += ms2;
+    particleBawah2 -= ms2;
+    particleKanan2 += ms2;
+    particleKiri2 -= ms2;
+
+    opacityParticle2 -= 3.5;
+
+    glutTimerFunc(50,particleEffectBensinTimer2,0);
     glutPostRedisplay();
 }
 
@@ -628,7 +706,7 @@ void mainBensinColliderSpawner()
             ((charaPosX[0] >= posXben2[0] && charaPosX[0] <= posXben2[1]) && (charaPosY[1] <= posYben2[0] && charaPosY[1] >= posYben2[1]))
             )
     {
-        particleMuncul = true;
+        particleMuncul2 = true;
 
         if (destroyBensin2 == false)
         {
@@ -669,6 +747,34 @@ void mainBensinColliderSpawner()
     if (opacityParticle <= 0)
     {
         particleMuncul = false;
+    }
+
+        if (particleMuncul2 == true)
+    {
+        ms2 = 0.5;
+
+        float posX_particle2 = posXben2[0]-10;
+        float posY_particle2 = posYben2[1];
+
+        glPushMatrix();
+        glTranslatef(posX_particle2,posY_particle2,0);
+        particleEffectBensinSpawner2();
+        glPopMatrix();
+    }
+    else if (particleMuncul2 == false)
+    {
+        particleAtas2 = 0;
+        particleBawah2 = 0;
+        particleKanan2 = 0;
+        particleKiri2 = 0;
+        opacityParticle2 = 255;
+
+        ms2 = 0;
+    }
+
+    if (opacityParticle2 <= 0)
+    {
+        particleMuncul2 = false;
     }
 
 }
@@ -723,6 +829,7 @@ int main(int argc, char** argv)
     glutTimerFunc(1,enemyB_Movement,0);
     glutTimerFunc(1,enemyC_Movement,0);
     glutTimerFunc(1,particleEffectBensinTimer,0);
+    glutTimerFunc(1,particleEffectBensinTimer2,0);
     glutTimerFunc(1,animasiBensin,0);
 
     myinit();
