@@ -19,6 +19,7 @@ BintangObjectClass bintangObject1;
 EnemyObjectClass enemyObject1;
 
 float bensin = 100;
+bool kalah = false;
 
 using namespace std;
 float gravity = 0;
@@ -156,6 +157,7 @@ void particleEffectBensinSpawner()
     particleEffectBensin();
     glPopMatrix();
 }
+
 void particleEffectBensinSpawner2()
 {
     glPushMatrix();
@@ -447,6 +449,13 @@ void mainCharacterMove()
         glPopMatrix();
     }
     glPopMatrix();
+
+    if (charaPosY[0] <= 0 && kalah == false)
+    {
+        kalah = true;
+        cout<<"Kalah"<<endl;
+        bensin -= 50;
+    }
 }
 
 void mainBintangSpawner()
