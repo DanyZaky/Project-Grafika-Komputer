@@ -62,6 +62,29 @@ float posXben2[2];
 float posYben[2] = {660,626};
 float posYben2[2] = {660+640,626+640};
 
+void bensinBarView()
+{
+    glPushMatrix();
+    glTranslatef(20,0,0);
+    glBegin(GL_QUADS);
+
+    glColor3ub(155,93,12);
+
+        glVertex2f(-5,625);
+        glVertex2f(-5,605);
+        glVertex2f(105,605);
+        glVertex2f(105,625);
+
+    glColor3ub(240,141,3);
+        glVertex2f(0,620);
+        glVertex2f(0,610);
+        glVertex2f(bensin,610);
+        glVertex2f(bensin,620);
+
+    glEnd();
+    glPopMatrix();
+}
+
 void particleEffectBensin()
 {
     glPushMatrix();
@@ -796,6 +819,8 @@ void displayMe()
 
     colliderCharacter();
     mainCharacterMove();
+
+    bensinBarView();
 
     glFlush();
     glutSwapBuffers();
