@@ -63,6 +63,21 @@ float posXben2[2];
 float posYben[2] = {660,626};
 float posYben2[2] = {660+640,626+640};
 
+float posXenemyA[2];
+float posYenemyA[2] = {850,820};
+float posXenemyA2[2];
+float posYenemyA2[2] = {850+740,820+740};
+
+float posXenemyB[2];
+float posYenemyB[2];
+float posXenemyB2[2];
+float posYenemyB2[2];
+
+float posXenemyC[2];
+float posYenemyC[2];
+float posXenemyC2[2];
+float posYenemyC2[2];
+
 void bensinBarView()
 {
     glPushMatrix();
@@ -240,6 +255,84 @@ void colliderCharacter()
     glPopMatrix();
 }
 
+void colliderEnemyA()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXenemyA[0],posYenemyA[0]);
+        glVertex2f(posXenemyA[1],posYenemyA[0]);
+        glVertex2f(posXenemyA[1],posYenemyA[1]);
+        glVertex2f(posXenemyA[0],posYenemyA[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderEnemyA2()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXenemyA2[0],posYenemyA2[0]);
+        glVertex2f(posXenemyA2[1],posYenemyA2[0]);
+        glVertex2f(posXenemyA2[1],posYenemyA2[1]);
+        glVertex2f(posXenemyA2[0],posYenemyA2[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderEnemyB()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXenemyB[0],posYenemyB[0]);
+        glVertex2f(posXenemyB[1],posYenemyB[0]);
+        glVertex2f(posXenemyB[1],posYenemyB[1]);
+        glVertex2f(posXenemyB[0],posYenemyB[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderEnemyB2()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXenemyB2[0],posYenemyB2[0]);
+        glVertex2f(posXenemyB2[1],posYenemyB2[0]);
+        glVertex2f(posXenemyB2[1],posYenemyB2[1]);
+        glVertex2f(posXenemyB2[0],posYenemyB2[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderEnemyC()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXenemyC[0],posYenemyC[0]);
+        glVertex2f(posXenemyC[1],posYenemyC[0]);
+        glVertex2f(posXenemyC[1],posYenemyC[1]);
+        glVertex2f(posXenemyC[0],posYenemyC[1]);
+    glEnd();
+    glPopMatrix();
+}
+
+void colliderEnemyC2()
+{
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor4ub(255,255,255,255);
+        glVertex2f(posXenemyC2[0],posYenemyC2[0]);
+        glVertex2f(posXenemyC2[1],posYenemyC2[0]);
+        glVertex2f(posXenemyC2[1],posYenemyC2[1]);
+        glVertex2f(posXenemyC2[0],posYenemyC2[1]);
+    glEnd();
+    glPopMatrix();
+}
+
 void colliderBensin()
 {
     glPushMatrix();
@@ -360,6 +453,12 @@ void enemyA_Movement(int timer)
 
     enemyA_jatuh -= gravityEnemyA;
 
+    posYenemyA[0] -= gravityEnemyA;
+    posYenemyA[1] -= gravityEnemyA;
+
+    posYenemyA2[0] -= gravityEnemyA;
+    posYenemyA2[1] -= gravityEnemyA;
+
     glutTimerFunc(25,enemyA_Movement,0);
     glutPostRedisplay();
 }
@@ -370,6 +469,12 @@ void enemyB_Movement(int timer)
 
     enemyB_jatuh -= gravityEnemyB;
 
+    posYenemyB[0] -= gravityEnemyB;
+    posYenemyB[1] -= gravityEnemyB;
+
+    posYenemyB2[0] -= gravityEnemyB;
+    posYenemyB2[1] -= gravityEnemyB;
+
     glutTimerFunc(25,enemyB_Movement,0);
     glutPostRedisplay();
 }
@@ -379,6 +484,12 @@ void enemyC_Movement(int timer)
     float gravityEnemyC = 1.25;
 
     enemyC_jatuh -= gravityEnemyC;
+
+    posYenemyC[0] -= gravityEnemyC;
+    posYenemyC[1] -= gravityEnemyC;
+
+    posYenemyC2[0] -= gravityEnemyC;
+    posYenemyC2[1] -= gravityEnemyC;
 
     glutTimerFunc(25,enemyC_Movement,0);
     glutPostRedisplay();
@@ -811,12 +922,36 @@ void mainBensinColliderSpawner()
 
 }
 
+void mainEnemyA_colliderSpawner()
+{
+    posXenemyA[0] = 62;
+    posXenemyA[1] = 99;
+    colliderEnemyA();
+
+    if (posYenemyA[0] <= 0)
+    {
+        posYenemyA[0] += 740*2;
+        posYenemyA[1] += 740*2;
+    }
+
+    posXenemyA2[0] = 242;
+    posXenemyA2[1] = 280;
+    colliderEnemyA2();
+
+    if (posYenemyA2[0] <= 0)
+    {
+        posYenemyA2[0] += 740*2;
+        posYenemyA2[1] += 740*2;
+    }
+}
+
 void displayMe()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.06,0.16,0.2,0);
     glMatrixMode(GL_MODELVIEW);
 
+    mainEnemyA_colliderSpawner();
     enemyA_Spawner();
     enemyB_Spawner();
     enemyC_Spawner();
