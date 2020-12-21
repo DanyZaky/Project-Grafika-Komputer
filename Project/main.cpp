@@ -69,14 +69,14 @@ float posXenemyA2[2];
 float posYenemyA2[2] = {850+740,820+740};
 
 float posXenemyB[2];
-float posYenemyB[2];
+float posYenemyB[2] = {515,485};
 float posXenemyB2[2];
-float posYenemyB2[2];
+float posYenemyB2[2] = {515+250,485+250};;
 
 float posXenemyC[2];
-float posYenemyC[2];
+float posYenemyC[2] = {660,620};
 float posXenemyC2[2];
-float posYenemyC2[2];
+float posYenemyC2[2] = {660+450,620+450};
 
 void bensinBarView()
 {
@@ -723,17 +723,13 @@ void enemyB_Spawner() // damage low
 
             float enemyB_Pos;
 
-            if (i%3 == 0)
+            if (i%2 == 0)
             {
                 enemyB_Pos = 64;
             }
-            else if (i%3 == 1)
+            else if (i%2 == 1)
             {
-                enemyB_Pos = 250;
-            }
-            else if (i%3 == 2)
-            {
-                enemyB_Pos == 165;
+                enemyB_Pos = 225;
             }
             glTranslatef(enemyB_Pos,0,0);
             glPushMatrix();
@@ -945,6 +941,52 @@ void mainEnemyA_colliderSpawner()
     }
 }
 
+void mainEnemyB_colliderSpawner()
+{
+    posXenemyB[0] = 48;
+    posXenemyB[1] = 79;
+    colliderEnemyB();
+
+    if (posYenemyB[0] <= 100)
+    {
+        posYenemyB[0] += 250*2;
+        posYenemyB[1] += 250*2;
+    }
+
+    posXenemyB2[0] = 210;
+    posXenemyB2[1] = 240;
+    colliderEnemyB2();
+
+    if (posYenemyB2[0] <= 100)
+    {
+        posYenemyB2[0] += 250*2;
+        posYenemyB2[1] += 250*2;
+    }
+}
+
+void mainEnemyC_colliderSpawner()
+{
+    posXenemyC[0] = 102;
+    posXenemyC[1] = 138;
+    colliderEnemyC();
+
+    if (posYenemyC[0] <= 0)
+    {
+        posYenemyC[0] += 450*2;
+        posYenemyC[1] += 450*2;
+    }
+
+    posXenemyC2[0] = 175;
+    posXenemyC2[1] = 215;
+    colliderEnemyC2();
+
+    if (posYenemyC2[0] <= 0)
+    {
+        posYenemyC2[0] += 450*2;
+        posYenemyC2[1] += 450*2;
+    }
+}
+
 void displayMe()
 {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -953,7 +995,11 @@ void displayMe()
 
     mainEnemyA_colliderSpawner();
     enemyA_Spawner();
+
+    mainEnemyB_colliderSpawner();
     enemyB_Spawner();
+
+    mainEnemyC_colliderSpawner();
     enemyC_Spawner();
 
     mainBintangSpawner();
