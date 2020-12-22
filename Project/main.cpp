@@ -19,6 +19,7 @@ BintangObjectClass bintangObject1;
 EnemyObjectClass enemyObject1;
 
 float bensin = 100;
+float dmgCooldown = 5;
 bool kalah = false;
 
 using namespace std;
@@ -77,6 +78,27 @@ float posXenemyC[2];
 float posYenemyC[2] = {660,620};
 float posXenemyC2[2];
 float posYenemyC2[2] = {660+450,620+450};
+
+void resetDmgCooldown()
+{
+    dmgCooldown = 2;
+    cout<<"Nabrak"<<endl;
+}
+
+void damageOren()
+{
+    bensin -= 15;
+}
+
+void damageUngu()
+{
+    bensin -= 10;
+}
+
+void damageIjo()
+{
+    bensin -= 5;
+}
 
 void bensinBarView()
 {
@@ -362,7 +384,7 @@ void colliderBensin2()
 void scoreCharacter(int timer)
 {
     bensin -= 1;
-
+    if (dmgCooldown >= 0) {dmgCooldown -= 0.5;}
     glutTimerFunc(700,scoreCharacter,0);
     glutPostRedisplay();
 }
@@ -939,6 +961,28 @@ void mainEnemyA_colliderSpawner()
         posYenemyA2[0] += 740*2;
         posYenemyA2[1] += 740*2;
     }
+    //Fungsi Collision player and colliderEnemyA
+    if ((
+            ((charaPosX[0] >= posXenemyA[0] && charaPosX[0] <= posXenemyA[1]) && (charaPosY[0] <= posYenemyA[0] && charaPosY[0] >= posYenemyA[1])) ||
+            ((charaPosX[1] >= posXenemyA[0] && charaPosX[1] <= posXenemyA[1]) && (charaPosY[0] <= posYenemyA[0] && charaPosY[0] >= posYenemyA[1])) ||
+            ((charaPosX[1] >= posXenemyA[0]&& charaPosX[1] <= posXenemyA[1]) && (charaPosY[1] <= posYenemyA[0] && charaPosY[1] >= posYenemyA[1])) ||
+            ((charaPosX[0] >= posXenemyA[0] && charaPosX[0] <= posXenemyA[1]) && (charaPosY[1] <= posYenemyA[0] && charaPosY[1] >= posYenemyA[1]))
+        ) && (dmgCooldown <= 0))
+    {
+        resetDmgCooldown();
+        damageUngu();
+    }
+    //Fungsi Collision player and colliderEnemyA2
+    if ((
+            ((charaPosX[0] >= posXenemyA2[0] && charaPosX[0] <= posXenemyA2[1] ) && (charaPosY[0] <= posYenemyA2[0]  && charaPosY[0] >= posYenemyA2[1] )) ||
+            ((charaPosX[1] >= posXenemyA2[0] && charaPosX[1] <= posXenemyA2[1] ) && (charaPosY[0] <= posYenemyA2[0]  && charaPosY[0] >= posYenemyA2[1] )) ||
+            ((charaPosX[1] >= posXenemyA[0]&& charaPosX[1] <= posXenemyA2[1] ) && (charaPosY[1] <= posYenemyA2[0]  && charaPosY[1] >= posYenemyA2[1] )) ||
+            ((charaPosX[0] >= posXenemyA2[0] && charaPosX[0] <= posXenemyA2[1] ) && (charaPosY[1] <= posYenemyA2[0]  && charaPosY[1] >= posYenemyA2[1] ))
+        ) && (dmgCooldown <= 0))
+    {
+        resetDmgCooldown();
+        damageUngu();
+    }
 }
 
 void mainEnemyB_colliderSpawner()
@@ -962,6 +1006,28 @@ void mainEnemyB_colliderSpawner()
         posYenemyB2[0] += 250*2;
         posYenemyB2[1] += 250*2;
     }
+    //Fungsi Collision player and colliderEnemyB
+    if ((
+            ((charaPosX[0] >= posXenemyB[0] && charaPosX[0] <= posXenemyB[1] ) && (charaPosY[0] <= posYenemyB[0]  && charaPosY[0] >= posYenemyB[1] )) ||
+            ((charaPosX[1] >= posXenemyB[0] && charaPosX[1] <= posXenemyB[1] ) && (charaPosY[0] <= posYenemyB[0]  && charaPosY[0] >= posYenemyB[1] )) ||
+            ((charaPosX[1] >= posXenemyB[0] && charaPosX[1] <= posXenemyB[1] ) && (charaPosY[1] <= posYenemyB[0]  && charaPosY[1] >= posYenemyB[1] )) ||
+            ((charaPosX[0] >= posXenemyB[0] && charaPosX[0] <= posXenemyB[1] ) && (charaPosY[1] <= posYenemyB[0]  && charaPosY[1] >= posYenemyB[1] ))
+        ) && (dmgCooldown <= 0))
+    {
+        resetDmgCooldown();
+        damageIjo();
+    }
+    //Fungsi Collision player and colliderEnemyB2
+    if ((
+            ((charaPosX[0] >= posXenemyB2[0] && charaPosX[0] <= posXenemyB2[1] ) && (charaPosY[0] <= posYenemyB2[0]  && charaPosY[0] >= posYenemyB2[1] )) ||
+            ((charaPosX[1] >= posXenemyB2[0] && charaPosX[1] <= posXenemyB2[1] ) && (charaPosY[0] <= posYenemyB2[0]  && charaPosY[0] >= posYenemyB2[1] )) ||
+            ((charaPosX[1] >= posXenemyB2[0] && charaPosX[1] <= posXenemyB2[1] ) && (charaPosY[1] <= posYenemyB2[0]  && charaPosY[1] >= posYenemyB2[1] )) ||
+            ((charaPosX[0] >= posXenemyB2[0] && charaPosX[0] <= posXenemyB2[1] ) && (charaPosY[1] <= posYenemyB2[0]  && charaPosY[1] >= posYenemyB2[1] ))
+        ) && (dmgCooldown <= 0))
+    {
+        resetDmgCooldown();
+        damageIjo();
+    }
 }
 
 void mainEnemyC_colliderSpawner()
@@ -984,6 +1050,28 @@ void mainEnemyC_colliderSpawner()
     {
         posYenemyC2[0] += 450*2;
         posYenemyC2[1] += 450*2;
+    }
+    //Fungsi Collision player and colliderEnemyC
+    if ((
+            ((charaPosX[0] >= posXenemyC[0] && charaPosX[0] <= posXenemyC[1] ) && (charaPosY[0] <= posYenemyC[0]  && charaPosY[0] >= posYenemyC[1] )) ||
+            ((charaPosX[1] >= posXenemyC[0] && charaPosX[1] <= posXenemyC[1] ) && (charaPosY[0] <= posYenemyC[0]  && charaPosY[0] >= posYenemyC[1] )) ||
+            ((charaPosX[1] >= posXenemyC[0] && charaPosX[1] <= posXenemyC[1] ) && (charaPosY[1] <= posYenemyC[0]  && charaPosY[1] >= posYenemyC[1] )) ||
+            ((charaPosX[0] >= posXenemyC[0] && charaPosX[0] <= posXenemyC[1] ) && (charaPosY[1] <= posYenemyC[0]  && charaPosY[1] >= posYenemyC[1] ))
+        ) && (dmgCooldown <= 0))
+    {
+        resetDmgCooldown();
+        damageOren();
+    }
+    //Fungsi Collision player and colliderEnemyC2
+    if ((
+            ((charaPosX[0] >= posXenemyC2[0] && charaPosX[0] <= posXenemyC2[1] ) && (charaPosY[0] <= posYenemyC2[0]  && charaPosY[0] >= posYenemyC2[1] )) ||
+            ((charaPosX[1] >= posXenemyC2[0] && charaPosX[1] <= posXenemyC2[1] ) && (charaPosY[0] <= posYenemyC2[0]  && charaPosY[0] >= posYenemyC2[1] )) ||
+            ((charaPosX[1] >= posXenemyC2[0] && charaPosX[1] <= posXenemyC2[1] ) && (charaPosY[1] <= posYenemyC2[0]  && charaPosY[1] >= posYenemyC2[1] )) ||
+            ((charaPosX[0] >= posXenemyC2[0] && charaPosX[0] <= posXenemyC2[1] ) && (charaPosY[1] <= posYenemyC2[0]  && charaPosY[1] >= posYenemyC2[1] ))
+        ) && (dmgCooldown <= 0))
+    {
+        resetDmgCooldown();
+        damageOren();
     }
 }
 
