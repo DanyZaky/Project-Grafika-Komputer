@@ -48,6 +48,7 @@
 		<Unit filename="character.h" />
 		<Unit filename="enemy.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="particle-effect-character-damaged.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

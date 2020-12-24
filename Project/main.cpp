@@ -13,12 +13,15 @@
 #include "bensin.h"
 #include "bintang.h"
 #include "enemy.h"
+#include "particle-effect-character-damaged.h"
 
 CharacterObjectClass characterObject1;
 CharacterFireObjectClass characterFireObject1;
 BensinObjectClass bensinObject1;
 BintangObjectClass bintangObject1;
 EnemyObjectClass enemyObject1;
+ParticleEffectCharacterClass particleEffectCharacter1;
+ParticleEffectCharacterClass particleEffectCharacter2;
 
 float bensin = 100;
 float dmgCooldown = 5;
@@ -95,6 +98,25 @@ void drawText(int x, int y, const char *string)
     {
         glutBitmapCharacter(font, string[i]);
     }
+}
+
+void particleEffectCharacterTimer(int timer)
+{
+    particleEffectCharacter1.particleAtasCharacter += particleEffectCharacter1.msPartChara;
+    particleEffectCharacter1.particleBawahCharacter -= particleEffectCharacter1.msPartChara;
+    particleEffectCharacter1.particleKananCharacter += particleEffectCharacter1.msPartChara;
+    particleEffectCharacter1.particleKiriCharacter -= particleEffectCharacter1.msPartChara;
+
+    particleEffectCharacter2.particleAtasCharacter += particleEffectCharacter2.msPartChara;
+    particleEffectCharacter2.particleBawahCharacter -= particleEffectCharacter2.msPartChara;
+    particleEffectCharacter2.particleKananCharacter += particleEffectCharacter2.msPartChara;
+    particleEffectCharacter2.particleKiriCharacter -= particleEffectCharacter2.msPartChara;
+
+    particleEffectCharacter1.opacityParticleCharacter -= 3.5;
+    particleEffectCharacter2.opacityParticleCharacter -= 3.5;
+
+    glutTimerFunc(50,particleEffectCharacterTimer,0);
+    glutPostRedisplay();
 }
 
 void resetDmgCooldown()
@@ -996,6 +1018,8 @@ void mainEnemyA_colliderSpawner()
             ((charaPosX[0] >= posXenemyA[0] && charaPosX[0] <= posXenemyA[1]) && (charaPosY[1] <= posYenemyA[0] && charaPosY[1] >= posYenemyA[1]))
         ) && (dmgCooldown <= 0))
     {
+        particleEffectCharacter1.particleMuncul = true;
+
         resetDmgCooldown();
         damageUngu();
     }
@@ -1007,8 +1031,67 @@ void mainEnemyA_colliderSpawner()
             ((charaPosX[0] >= posXenemyA2[0] && charaPosX[0] <= posXenemyA2[1] ) && (charaPosY[1] <= posYenemyA2[0]  && charaPosY[1] >= posYenemyA2[1] ))
         ) && (dmgCooldown <= 0))
     {
+        particleEffectCharacter2.particleMuncul = true;
+
         resetDmgCooldown();
         damageUngu();
+    }
+
+    if (particleEffectCharacter1.particleMuncul == true)
+    {
+        particleEffectCharacter1.msPartChara = 0.5;
+
+        float posXpart_chara = ((posXenemyA[1] - posXenemyA[0]) / 2 ) + posXenemyA[0];
+        float posYpart_chara = ((posYenemyA[1] - posYenemyA[0]) / 2 ) + posYenemyA[0];
+
+        glPushMatrix();
+        glTranslatef(posXpart_chara,posYpart_chara,0);
+        particleEffectCharacter1.ParticleEffectCharacterSpawner();
+        glPopMatrix();
+    }
+    else if (particleEffectCharacter1.particleMuncul == false)
+    {
+        particleEffectCharacter1.particleAtasCharacter = 0;
+        particleEffectCharacter1.particleBawahCharacter = 0;
+        particleEffectCharacter1.particleKananCharacter = 0;
+        particleEffectCharacter1.particleKiriCharacter = 0;
+
+        particleEffectCharacter1.opacityParticleCharacter = 255;
+        particleEffectCharacter1.msPartChara = 0;
+    }
+
+    if (particleEffectCharacter1.opacityParticleCharacter <= 0)
+    {
+        particleEffectCharacter1.particleMuncul = false;
+    }
+
+    //=================== particle 2 ===================
+    if (particleEffectCharacter2.particleMuncul == true)
+    {
+        particleEffectCharacter2.msPartChara = 0.5;
+
+        float posXpart_chara = ((posXenemyA2[1] - posXenemyA2[0]) / 2 ) + posXenemyA2[0];
+        float posYpart_chara = ((posYenemyA2[1] - posYenemyA2[0]) / 2 ) + posYenemyA2[0];
+
+        glPushMatrix();
+        glTranslatef(posXpart_chara,posYpart_chara,0);
+        particleEffectCharacter2.ParticleEffectCharacterSpawner();
+        glPopMatrix();
+    }
+    else if (particleEffectCharacter2.particleMuncul == false)
+    {
+        particleEffectCharacter2.particleAtasCharacter = 0;
+        particleEffectCharacter2.particleBawahCharacter = 0;
+        particleEffectCharacter2.particleKananCharacter = 0;
+        particleEffectCharacter2.particleKiriCharacter = 0;
+
+        particleEffectCharacter2.opacityParticleCharacter = 255;
+        particleEffectCharacter2.msPartChara = 0;
+    }
+
+    if (particleEffectCharacter2.opacityParticleCharacter <= 0)
+    {
+        particleEffectCharacter2.particleMuncul = false;
     }
 }
 
@@ -1127,7 +1210,6 @@ void displayMe()
 
     bensinBarView();
 
-    glColor3ub(0,0,0);
     sprintf(cetakScore, "%d", scoreChara);
 
     drawText(20,615, cetakScore);
@@ -1166,6 +1248,7 @@ int main(int argc, char** argv)
     glutTimerFunc(1,particleEffectBensinTimer,0);
     glutTimerFunc(1,particleEffectBensinTimer2,0);
     glutTimerFunc(1,animasiBensin,0);
+    glutTimerFunc(1,particleEffectCharacterTimer,0);
 
     myinit();
     glutMainLoop();
