@@ -230,13 +230,15 @@
 1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
 	<_mingw.h>
 
-1608794112 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
+1608806812 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
 	<iostream>
 	<GL/gl.h>
 	<GL/glu.h>
 	<GL/glut.h>
 	<math.h>
 	<windows.h>
+	<stdio.h>
+	<fstream>
 	"character.h"
 	"character-fire.h"
 	"bensin.h"
@@ -341,4 +343,14 @@
 1608269300 h:\grafkomgithub\project-grafika-komputer\project\bintang.h
 
 1608269300 h:\grafkomgithub\project-grafika-komputer\project\enemy.h
+
+1341006776 c:\program files (x86)\codeblocks\mingw\include\stdio.h
+	<_mingw.h>
+	<stddef.h>
+	<stdarg.h>
+	<sys/types.h>
+
+1341006780 c:\program files (x86)\codeblocks\mingw\include\sys\types.h
+	<_mingw.h>
+	<stddef.h>
 

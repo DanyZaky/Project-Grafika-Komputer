@@ -4,6 +4,8 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <windows.h>
+#include <stdio.h>
+#include <fstream>
 
 //HEADER
 #include "character.h"
@@ -79,7 +81,8 @@ float posYenemyC[2] = {660,620};
 float posXenemyC2[2];
 float posYenemyC2[2] = {660+450,620+450};
 
-int scoreChara = 0;
+int scoreChara;
+char cetakScore[1000];
 
 void *font = GLUT_BITMAP_9_BY_15;
 
@@ -399,6 +402,8 @@ void colliderBensin2()
 void scoreCharacter(int timer)
 {
     bensin -= 1;
+
+    scoreChara += 1;
 
     if (dmgCooldown >= 0) {dmgCooldown -= 0.5;}
     glutTimerFunc(700,scoreCharacter,0);
@@ -1122,7 +1127,10 @@ void displayMe()
 
     bensinBarView();
 
-    drawText(20,615, "6969");
+    glColor3ub(0,0,0);
+    sprintf(cetakScore, "%d", scoreChara);
+
+    drawText(20,615, cetakScore);
 
     glFlush();
     glutSwapBuffers();
