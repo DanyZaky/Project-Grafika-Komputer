@@ -79,6 +79,21 @@ float posYenemyC[2] = {660,620};
 float posXenemyC2[2];
 float posYenemyC2[2] = {660+450,620+450};
 
+int scoreChara = 0;
+
+void *font = GLUT_BITMAP_9_BY_15;
+
+void drawText(int x, int y, const char *string)
+{
+    glColor3ub(255,255,255);
+    glRasterPos2f(x, y);
+    int panjang = (int)strlen(string);
+    for (int i = 0; i < panjang; i++)
+    {
+        glutBitmapCharacter(font, string[i]);
+    }
+}
+
 void resetDmgCooldown()
 {
     dmgCooldown = 2;
@@ -103,17 +118,17 @@ void damageIjo()
 void bensinBarView()
 {
     glPushMatrix();
-    glTranslatef(20,0,0);
+    glTranslatef(20,-20,0);
     glBegin(GL_QUADS);
 
-    glColor3ub(155,93,12);
+    glColor3ub(143,143,143);
 
         glVertex2f(-5,625);
         glVertex2f(-5,605);
         glVertex2f(105,605);
         glVertex2f(105,625);
 
-    glColor3ub(240,141,3);
+    glColor3ub(212,212,212);
         glVertex2f(0,620);
         glVertex2f(0,610);
         glVertex2f(bensin,610);
@@ -281,7 +296,7 @@ void colliderEnemyA()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
+    glColor4ub(255,255,255,0);
         glVertex2f(posXenemyA[0],posYenemyA[0]);
         glVertex2f(posXenemyA[1],posYenemyA[0]);
         glVertex2f(posXenemyA[1],posYenemyA[1]);
@@ -294,7 +309,7 @@ void colliderEnemyA2()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
+    glColor4ub(255,255,255,0);
         glVertex2f(posXenemyA2[0],posYenemyA2[0]);
         glVertex2f(posXenemyA2[1],posYenemyA2[0]);
         glVertex2f(posXenemyA2[1],posYenemyA2[1]);
@@ -307,7 +322,7 @@ void colliderEnemyB()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
+    glColor4ub(255,255,255,0);
         glVertex2f(posXenemyB[0],posYenemyB[0]);
         glVertex2f(posXenemyB[1],posYenemyB[0]);
         glVertex2f(posXenemyB[1],posYenemyB[1]);
@@ -320,7 +335,7 @@ void colliderEnemyB2()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
+    glColor4ub(255,255,255,0);
         glVertex2f(posXenemyB2[0],posYenemyB2[0]);
         glVertex2f(posXenemyB2[1],posYenemyB2[0]);
         glVertex2f(posXenemyB2[1],posYenemyB2[1]);
@@ -333,7 +348,7 @@ void colliderEnemyC()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
+    glColor4ub(255,255,255,0);
         glVertex2f(posXenemyC[0],posYenemyC[0]);
         glVertex2f(posXenemyC[1],posYenemyC[0]);
         glVertex2f(posXenemyC[1],posYenemyC[1]);
@@ -346,7 +361,7 @@ void colliderEnemyC2()
 {
     glPushMatrix();
     glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,255);
+    glColor4ub(255,255,255,0);
         glVertex2f(posXenemyC2[0],posYenemyC2[0]);
         glVertex2f(posXenemyC2[1],posYenemyC2[0]);
         glVertex2f(posXenemyC2[1],posYenemyC2[1]);
@@ -384,6 +399,7 @@ void colliderBensin2()
 void scoreCharacter(int timer)
 {
     bensin -= 1;
+
     if (dmgCooldown >= 0) {dmgCooldown -= 0.5;}
     glutTimerFunc(700,scoreCharacter,0);
     glutPostRedisplay();
@@ -453,7 +469,7 @@ void bintangMovement(int timer)
 
 void bensinMovement(int timer)
 {
-    float gravityBensin = 2.5;
+    float gravityBensin = 1;
     //object move down
     bensinJatuh -= gravityBensin;
     //collider move down
@@ -855,7 +871,7 @@ void mainBensinColliderSpawner()
             {
                 bensin = 100;
             }
-            cout << bensin << endl;
+
             bensinObject1.opacity = 0;
         }
     }
@@ -877,7 +893,7 @@ void mainBensinColliderSpawner()
             {
                 bensin = 100;
             }
-            cout << bensin << endl;
+
             bensinObject1.opacity = 0;
         }
     }
@@ -936,6 +952,12 @@ void mainBensinColliderSpawner()
     if (opacityParticle2 <= 0)
     {
         particleMuncul2 = false;
+    }
+
+    if (bensin <= 0)
+    {
+        bensin = 0;
+        cout << "lu dah kalah oy" << endl;
     }
 
 }
@@ -1099,6 +1121,8 @@ void displayMe()
     mainCharacterMove();
 
     bensinBarView();
+
+    drawText(20,615, "6969");
 
     glFlush();
     glutSwapBuffers();
