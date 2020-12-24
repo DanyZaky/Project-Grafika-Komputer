@@ -5,8 +5,6 @@
 #include <math.h>
 #include <windows.h>
 #include <stdio.h>
-#include <fstream>
-
 //HEADER
 #include "character.h"
 #include "character-fire.h"
@@ -14,90 +12,94 @@
 #include "bintang.h"
 #include "enemy.h"
 #include "particle-effect-character-damaged.h"
+#include "game-ui.h"
 
 CharacterObjectClass characterObject1;
 CharacterFireObjectClass characterFireObject1;
+
 BensinObjectClass bensinObject1;
+BensinObjectClass bensinObject2;
+
 BintangObjectClass bintangObject1;
+
 EnemyObjectClass enemyObject1;
+EnemyColliderClass enemyCollider1;
+EnemyColliderClass enemyCollider2;
+
 ParticleEffectCharacterClass particleEffectCharacter1;
 ParticleEffectCharacterClass particleEffectCharacter2;
+ParticleEffectCharacterClass particleEffectCharacter3;
+ParticleEffectCharacterClass particleEffectCharacter4;
+ParticleEffectCharacterClass particleEffectCharacter5;
+ParticleEffectCharacterClass particleEffectCharacter6;
 
-float bensin = 100;
-float dmgCooldown = 5;
-bool kalah = false;
+GameUI_Class game_ui;
 
 using namespace std;
+
+//CHARACTER
 float gravity = 0;
 float kananKiri = 0;
+bool jatuh = true;
+bool flipped = true;
+
+//BINTANG
 float bintangJatuh = 0;
+
+//BENSIN
 float bensinJatuh = 0;
+
+//ENEMY
 float enemyA_jatuh = 0;
 float enemyB_jatuh = 0;
 float enemyC_jatuh = 0;
+float dmgCooldown = 5;
 
-float particleAtas;
-float particleBawah;
-float particleKanan;
-float particleKiri;
-float opacityParticle = 255;
-bool particleMuncul = false;
-float ms;
+//ANIMASI OBJECT
+bool membesar = false;
+float scale = 1;
 
-float particleAtas2;
-float particleBawah2;
-float particleKanan2;
-float particleKiri2;
-float opacityParticle2 = 255;
-bool particleMuncul2 = false;
-float ms2;
-
-bool jatuh = true;
-bool flipped = true;
-bool destroyBensin = false;
-bool destroyBensin2 = false;
-
-bool bensinMembesar = false;
-float bensinScale = 1;
-
-//COLLIDER ARRAY VARIABLE
-float charaPosX[2] = {160,200};
-float charaPosY[2] = {340,300};
-
-float posXben[2];
-float posXben2[2];
-float posYben[2] = {660,626};
-float posYben2[2] = {660+640,626+640};
-
-float posXenemyA[2];
-float posYenemyA[2] = {850,820};
-float posXenemyA2[2];
-float posYenemyA2[2] = {850+740,820+740};
-
-float posXenemyB[2];
-float posYenemyB[2] = {515,485};
-float posXenemyB2[2];
-float posYenemyB2[2] = {515+250,485+250};;
-
-float posXenemyC[2];
-float posYenemyC[2] = {660,620};
-float posXenemyC2[2];
-float posYenemyC2[2] = {660+450,620+450};
-
+//GAME UI
 int scoreChara;
 char cetakScore[1000];
+float bensin = 100;
+bool kalah = false;
 
-void *font = GLUT_BITMAP_9_BY_15;
-
-void drawText(int x, int y, const char *string)
+void resetDmgCooldown()
 {
-    glColor3ub(255,255,255);
-    glRasterPos2f(x, y);
-    int panjang = (int)strlen(string);
-    for (int i = 0; i < panjang; i++)
-    {
-        glutBitmapCharacter(font, string[i]);
-    }
+    dmgCooldown = 2;
+    cout<<"Nabrak"<<endl;
+}
+
+void gameUI_timer(int timer)
+{
+    bensin -= 1;
+
+    scoreChara += 1;
+
+    if (dmgCooldown >= 0) {dmgCooldown -= 0.5;}
+    glutTimerFunc(700,gameUI_timer,0);
+    glutPostRedisplay();
+}
+
+void particleEffectBensinTimer(int timer)
+{
+    bensinObject1.particleAtas += bensinObject1.ms;
+    bensinObject1.particleBawah -= bensinObject1.ms;
+    bensinObject1.particleKanan += bensinObject1.ms;
+    bensinObject1.particleKiri -= bensinObject1.ms;
+
+    bensinObject1.opacityParticle -= 3.5;
+
+    bensinObject2.particleAtas += bensinObject2.ms;
+    bensinObject2.particleBawah -= bensinObject2.ms;
+    bensinObject2.particleKanan += bensinObject2.ms;
+    bensinObject2.particleKiri -= bensinObject2.ms;
+
+    bensinObject2.opacityParticle -= 3.5;
+
+    glutTimerFunc(50,particleEffectBensinTimer,0);
+    glutPostRedisplay();
 }
 
 void particleEffectCharacterTimer(int timer)
@@ -112,323 +114,34 @@ void particleEffectCharacterTimer(int timer)
     particleEffectCharacter2.particleKananCharacter += particleEffectCharacter2.msPartChara;
     particleEffectCharacter2.particleKiriCharacter -= particleEffectCharacter2.msPartChara;
 
+    particleEffectCharacter3.particleAtasCharacter += particleEffectCharacter3.msPartChara;
+    particleEffectCharacter3.particleBawahCharacter -= particleEffectCharacter3.msPartChara;
+    particleEffectCharacter3.particleKananCharacter += particleEffectCharacter3.msPartChara;
+    particleEffectCharacter3.particleKiriCharacter -= particleEffectCharacter3.msPartChara;
+
+    particleEffectCharacter4.particleAtasCharacter += particleEffectCharacter4.msPartChara;
+    particleEffectCharacter4.particleBawahCharacter -= particleEffectCharacter4.msPartChara;
+    particleEffectCharacter4.particleKananCharacter += particleEffectCharacter4.msPartChara;
+    particleEffectCharacter4.particleKiriCharacter -= particleEffectCharacter4.msPartChara;
+
+    particleEffectCharacter5.particleAtasCharacter += particleEffectCharacter5.msPartChara;
+    particleEffectCharacter5.particleBawahCharacter -= particleEffectCharacter5.msPartChara;
+    particleEffectCharacter5.particleKananCharacter += particleEffectCharacter5.msPartChara;
+    particleEffectCharacter5.particleKiriCharacter -= particleEffectCharacter5.msPartChara;
+
+    particleEffectCharacter6.particleAtasCharacter += particleEffectCharacter6.msPartChara;
+    particleEffectCharacter6.particleBawahCharacter -= particleEffectCharacter6.msPartChara;
+    particleEffectCharacter6.particleKananCharacter += particleEffectCharacter6.msPartChara;
+    particleEffectCharacter6.particleKiriCharacter -= particleEffectCharacter6.msPartChara;
+
     particleEffectCharacter1.opacityParticleCharacter -= 3.5;
     particleEffectCharacter2.opacityParticleCharacter -= 3.5;
+    particleEffectCharacter3.opacityParticleCharacter -= 3.5;
+    particleEffectCharacter4.opacityParticleCharacter -= 3.5;
+    particleEffectCharacter5.opacityParticleCharacter -= 3.5;
+    particleEffectCharacter6.opacityParticleCharacter -= 3.5;
 
     glutTimerFunc(50,particleEffectCharacterTimer,0);
-    glutPostRedisplay();
-}
-
-void resetDmgCooldown()
-{
-    dmgCooldown = 2;
-    cout<<"Nabrak"<<endl;
-}
-
-void damageOren()
-{
-    bensin -= 15;
-}
-
-void damageUngu()
-{
-    bensin -= 10;
-}
-
-void damageIjo()
-{
-    bensin -= 5;
-}
-
-void bensinBarView()
-{
-    glPushMatrix();
-    glTranslatef(20,-20,0);
-    glBegin(GL_QUADS);
-
-    glColor3ub(143,143,143);
-
-        glVertex2f(-5,625);
-        glVertex2f(-5,605);
-        glVertex2f(105,605);
-        glVertex2f(105,625);
-
-    glColor3ub(212,212,212);
-        glVertex2f(0,620);
-        glVertex2f(0,610);
-        glVertex2f(bensin,610);
-        glVertex2f(bensin,620);
-
-    glEnd();
-    glPopMatrix();
-}
-
-void particleEffectBensin()
-{
-    glPushMatrix();
-    glTranslatef(20,20,0);
-    glBegin(GL_QUADS);
-    glColor4ub(240,141,3,opacityParticle);
-        glVertex2f(2,2);
-        glVertex2f(2,-2);
-        glVertex2f(-2,-2);
-        glVertex2f(-2,2);
-    glEnd();
-    glPopMatrix();
-}
-
-void particleEffectBensin2()
-{
-    glPushMatrix();
-    glTranslatef(20,20,0);
-    glBegin(GL_QUADS);
-    glColor4ub(240,141,3,opacityParticle2);
-        glVertex2f(2,2);
-        glVertex2f(2,-2);
-        glVertex2f(-2,-2);
-        glVertex2f(-2,2);
-    glEnd();
-    glPopMatrix();
-}
-
-void particleEffectBensinSpawner()
-{
-
-    glPushMatrix();
-    glTranslatef(0,particleAtas,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0,particleBawah,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKanan,0,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKiri,0,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKanan,particleAtas,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKiri,particleAtas,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKanan,particleBawah,0);
-    particleEffectBensin();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKiri,particleBawah,0);
-    particleEffectBensin();
-    glPopMatrix();
-}
-
-void particleEffectBensinSpawner2()
-{
-    glPushMatrix();
-    glTranslatef(0,particleAtas2,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0,particleBawah2,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKanan2,0,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKiri2,0,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKanan2,particleAtas2,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKiri2,particleAtas2,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKanan2,particleBawah2,0);
-    particleEffectBensin2();
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(particleKiri2,particleBawah2,0);
-    particleEffectBensin2();
-    glPopMatrix();
-}
-
-void particleEffectBensinTimer(int timer)
-{
-    particleAtas += ms;
-    particleBawah -= ms;
-    particleKanan += ms;
-    particleKiri -= ms;
-
-    opacityParticle -= 3.5;
-
-    glutTimerFunc(50,particleEffectBensinTimer,0);
-    glutPostRedisplay();
-}
-
-void particleEffectBensinTimer2(int timer)
-{
-    particleAtas2 += ms2;
-    particleBawah2 -= ms2;
-    particleKanan2 += ms2;
-    particleKiri2 -= ms2;
-
-    opacityParticle2 -= 3.5;
-
-    glutTimerFunc(50,particleEffectBensinTimer2,0);
-    glutPostRedisplay();
-}
-
-void colliderCharacter()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(110,110,110,0);
-        glVertex2f(charaPosX[0],charaPosY[0]);
-        glVertex2f(charaPosX[1],charaPosY[0]);
-        glVertex2f(charaPosX[1],charaPosY[1]);
-        glVertex2f(charaPosX[0],charaPosY[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderEnemyA()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXenemyA[0],posYenemyA[0]);
-        glVertex2f(posXenemyA[1],posYenemyA[0]);
-        glVertex2f(posXenemyA[1],posYenemyA[1]);
-        glVertex2f(posXenemyA[0],posYenemyA[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderEnemyA2()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXenemyA2[0],posYenemyA2[0]);
-        glVertex2f(posXenemyA2[1],posYenemyA2[0]);
-        glVertex2f(posXenemyA2[1],posYenemyA2[1]);
-        glVertex2f(posXenemyA2[0],posYenemyA2[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderEnemyB()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXenemyB[0],posYenemyB[0]);
-        glVertex2f(posXenemyB[1],posYenemyB[0]);
-        glVertex2f(posXenemyB[1],posYenemyB[1]);
-        glVertex2f(posXenemyB[0],posYenemyB[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderEnemyB2()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXenemyB2[0],posYenemyB2[0]);
-        glVertex2f(posXenemyB2[1],posYenemyB2[0]);
-        glVertex2f(posXenemyB2[1],posYenemyB2[1]);
-        glVertex2f(posXenemyB2[0],posYenemyB2[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderEnemyC()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXenemyC[0],posYenemyC[0]);
-        glVertex2f(posXenemyC[1],posYenemyC[0]);
-        glVertex2f(posXenemyC[1],posYenemyC[1]);
-        glVertex2f(posXenemyC[0],posYenemyC[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderEnemyC2()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXenemyC2[0],posYenemyC2[0]);
-        glVertex2f(posXenemyC2[1],posYenemyC2[0]);
-        glVertex2f(posXenemyC2[1],posYenemyC2[1]);
-        glVertex2f(posXenemyC2[0],posYenemyC2[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderBensin()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXben[0],posYben[0]);
-        glVertex2f(posXben[1],posYben[0]);
-        glVertex2f(posXben[1],posYben[1]);
-        glVertex2f(posXben[0],posYben[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void colliderBensin2()
-{
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor4ub(255,255,255,0);
-        glVertex2f(posXben2[0],posYben2[0]);
-        glVertex2f(posXben2[1],posYben2[0]);
-        glVertex2f(posXben2[1],posYben2[1]);
-        glVertex2f(posXben2[0],posYben2[1]);
-    glEnd();
-    glPopMatrix();
-}
-
-void scoreCharacter(int timer)
-{
-    bensin -= 1;
-
-    scoreChara += 1;
-
-    if (dmgCooldown >= 0) {dmgCooldown -= 0.5;}
-    glutTimerFunc(700,scoreCharacter,0);
     glutPostRedisplay();
 }
 
@@ -438,44 +151,44 @@ void characterMovement(int timer)
     //jatuhnya character
     if (jatuh == true)
     {
-        charaPosY[0] -= 3;
-        charaPosY[1] -= 3;
+        characterObject1.charaPosY[0] -= 3;
+        characterObject1.charaPosY[1] -= 3;
 
         gravity -= 3;
     }
     //gerak character kiri kanan
     if (GetAsyncKeyState(VK_RIGHT))
         {
-            if (charaPosX[1] <= 360)
+            if (characterObject1.charaPosX[1] <= 360)
             {
-                charaPosX[0] += 4;
-                charaPosX[1] += 4;
+                characterObject1.charaPosX[0] += 4;
+                characterObject1.charaPosX[1] += 4;
 
                 kananKiri += 4;
             }
 
-            if (charaPosY[0] <= 640)
+            if (characterObject1.charaPosY[0] <= 640)
             {
-                charaPosY[0] += 10;
-                charaPosY[1] += 10;
+                characterObject1.charaPosY[0] += 10;
+                characterObject1.charaPosY[1] += 10;
 
                 gravity += 10;
             }
         }
         else if (GetAsyncKeyState(VK_LEFT))
         {
-            if (charaPosX[0] >= 0)
+            if (characterObject1.charaPosX[0] >= 0)
             {
-                charaPosX[0] -= 4;
-                charaPosX[1] -= 4;
+                characterObject1.charaPosX[0] -= 4;
+                characterObject1.charaPosX[1] -= 4;
 
                 kananKiri -= 4;
             }
 
-            if (charaPosY[0] <= 640)
+            if (characterObject1.charaPosY[0] <= 640)
             {
-                charaPosY[0] += 10;
-                charaPosY[1] += 10;
+                characterObject1.charaPosY[0] += 10;
+                characterObject1.charaPosY[1] += 10;
 
                 gravity += 10;
             }
@@ -500,11 +213,11 @@ void bensinMovement(int timer)
     //object move down
     bensinJatuh -= gravityBensin;
     //collider move down
-    posYben[0] -= gravityBensin;
-    posYben[1] -= gravityBensin;
+    bensinObject1.posYben[0] -= gravityBensin;
+    bensinObject1.posYben[1] -= gravityBensin;
 
-    posYben2[0] -= gravityBensin;
-    posYben2[1] -= gravityBensin;
+    bensinObject2.posYben2[0] -= gravityBensin;
+    bensinObject2.posYben2[1] -= gravityBensin;
 
     //collision collider bensin to collider character
 
@@ -518,11 +231,11 @@ void enemyA_Movement(int timer)
 
     enemyA_jatuh -= gravityEnemyA;
 
-    posYenemyA[0] -= gravityEnemyA;
-    posYenemyA[1] -= gravityEnemyA;
+    enemyCollider1.posYenemyA[0] -= gravityEnemyA;
+    enemyCollider1.posYenemyA[1] -= gravityEnemyA;
 
-    posYenemyA2[0] -= gravityEnemyA;
-    posYenemyA2[1] -= gravityEnemyA;
+    enemyCollider2.posYenemyA2[0] -= gravityEnemyA;
+    enemyCollider2.posYenemyA2[1] -= gravityEnemyA;
 
     glutTimerFunc(25,enemyA_Movement,0);
     glutPostRedisplay();
@@ -534,11 +247,11 @@ void enemyB_Movement(int timer)
 
     enemyB_jatuh -= gravityEnemyB;
 
-    posYenemyB[0] -= gravityEnemyB;
-    posYenemyB[1] -= gravityEnemyB;
+    enemyCollider1.posYenemyB[0] -= gravityEnemyB;
+    enemyCollider1.posYenemyB[1] -= gravityEnemyB;
 
-    posYenemyB2[0] -= gravityEnemyB;
-    posYenemyB2[1] -= gravityEnemyB;
+    enemyCollider2.posYenemyB2[0] -= gravityEnemyB;
+    enemyCollider2.posYenemyB2[1] -= gravityEnemyB;
 
     glutTimerFunc(25,enemyB_Movement,0);
     glutPostRedisplay();
@@ -550,35 +263,35 @@ void enemyC_Movement(int timer)
 
     enemyC_jatuh -= gravityEnemyC;
 
-    posYenemyC[0] -= gravityEnemyC;
-    posYenemyC[1] -= gravityEnemyC;
+    enemyCollider1.posYenemyC[0] -= gravityEnemyC;
+    enemyCollider1.posYenemyC[1] -= gravityEnemyC;
 
-    posYenemyC2[0] -= gravityEnemyC;
-    posYenemyC2[1] -= gravityEnemyC;
+    enemyCollider2.posYenemyC2[0] -= gravityEnemyC;
+    enemyCollider2.posYenemyC2[1] -= gravityEnemyC;
 
     glutTimerFunc(25,enemyC_Movement,0);
     glutPostRedisplay();
 }
 
-void animasiBensin(int timer)
+void animasiObject(int timer)
 {
-    if(bensinScale >= 1){
-       bensinMembesar = false;
+    if(scale >= 1){
+       membesar = false;
     }
-    else if (bensinScale <= 0.8)
+    else if (scale <= 0.8)
     {
-       bensinMembesar = true;
+       membesar = true;
     }
 
-    if (bensinMembesar == false)
+    if (membesar == false)
     {
-       bensinScale -= 0.02;
+       scale -= 0.02;
     }
-    else if (bensinMembesar == true)
+    else if (membesar == true)
     {
-        bensinScale += 0.02;
+        scale += 0.02;
     }
-    glutTimerFunc(50,animasiBensin,0);
+    glutTimerFunc(50,animasiObject,0);
     glutPostRedisplay();
 }
 
@@ -626,7 +339,7 @@ void mainCharacterMove()
     }
     glPopMatrix();
 
-    if (charaPosY[0] <= 0 && kalah == false)
+    if (characterObject1.charaPosY[0] <= 0 && kalah == false)
     {
         kalah = true;
         cout<<"Kalah"<<endl;
@@ -727,7 +440,7 @@ void mainBensinSpawner()
                 glPushMatrix();
                 glTranslatef(0,640,0);
                 glPushMatrix();
-                glScalef(bensinScale,bensinScale,0);
+                glScalef(scale,scale,0);
                 bensinObject1.bensinObject();
                 glPopMatrix();
                 glPopMatrix();
@@ -765,7 +478,7 @@ void enemyA_Spawner() //damage high
                 glPushMatrix();
                 glTranslatef(0,840,0);
                 glPushMatrix();
-                glScalef(bensinScale,bensinScale,0);
+                glScalef(scale,scale,0);
                 enemyObject1.enemyAobject();
                 glPopMatrix();
                 glPopMatrix();
@@ -803,7 +516,7 @@ void enemyB_Spawner() // damage low
                 glPushMatrix();
                 glTranslatef(0,500,0);
                 glPushMatrix();
-                glScalef(bensinScale,bensinScale,0);
+                glScalef(scale,scale,0);
                 enemyObject1.enemyBobject();
                 glPopMatrix();
                 glPopMatrix();
@@ -841,7 +554,7 @@ void enemyC_Spawner() // damage mid
                 glPushMatrix();
                 glTranslatef(0,640,0);
                 glPushMatrix();
-                glScalef(bensinScale,bensinScale,0);
+                glScalef(scale,scale,0);
                 enemyObject1.enemyCobject();
                 glPopMatrix();
                 glPopMatrix();
@@ -856,43 +569,43 @@ void enemyC_Spawner() // damage mid
 void mainBensinColliderSpawner()
 {
     //COLLIDER BENSIN KIRI
-    posXben[0] = 20;
-    posXben[1] = 48;
-    colliderBensin();
+    bensinObject1.posXben[0] = 20;
+    bensinObject1.posXben[1] = 48;
+    bensinObject1.colliderBensin();
 
-    if (posYben[0] <= -14)
+    if (bensinObject1.posYben[0] <= -14)
     {
-        destroyBensin = false;
-        posYben[0] += 640*2;
-        posYben[1] += 640*2;
+        bensinObject1.destroyBensin = false;
+        bensinObject1.posYben[0] += 640*2;
+        bensinObject1.posYben[1] += 640*2;
         bensinObject1.opacity = 255;
     }
     //COLLIDER BENSIN KANAN
-    posXben2[0] = 310;
-    posXben2[1] = 338;
-    colliderBensin2();
+    bensinObject2.posXben[0] = 310;
+    bensinObject2.posXben[1] = 338;
+    bensinObject2.colliderBensin();
 
-    if (posYben2[0] <= -14)
+    if (bensinObject2.posYben2[0] <= -14)
     {
-        destroyBensin2 = false;
-        posYben2[0] += 640*2;
-        posYben2[1] += 640*2;
+        bensinObject2.destroyBensin = false;
+        bensinObject2.posYben2[0] += 640*2;
+        bensinObject2.posYben2[1] += 640*2;
         bensinObject1.opacity = 255;
     }
 
     //COLIISON COLIIDER BENSIN TO COLLIDER CHARACTER
     if (
-            ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
-            ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[0] <= posYben[0] && charaPosY[0] >= posYben[1])) ||
-            ((charaPosX[1] >= posXben[0] && charaPosX[1] <= posXben[1]) && (charaPosY[1] <= posYben[1] && charaPosY[1] >= posYben[1])) ||
-            ((charaPosX[0] >= posXben[0] && charaPosX[0] <= posXben[1]) && (charaPosY[1] <= posYben[0] && charaPosY[1] >= posYben[1]))
+            ((characterObject1.charaPosX[0] >= bensinObject1.posXben[0] && characterObject1.charaPosX[0] <= bensinObject1.posXben[1]) && (characterObject1.charaPosY[0] <= bensinObject1.posYben[0] && characterObject1.charaPosY[0] >= bensinObject1.posYben[1])) ||
+            ((characterObject1.charaPosX[1] >= bensinObject1.posXben[0] && characterObject1.charaPosX[1] <= bensinObject1.posXben[1]) && (characterObject1.charaPosY[0] <= bensinObject1.posYben[0] && characterObject1.charaPosY[0] >= bensinObject1.posYben[1])) ||
+            ((characterObject1.charaPosX[1] >= bensinObject1.posXben[0] && characterObject1.charaPosX[1] <= bensinObject1.posXben[1]) && (characterObject1.charaPosY[1] <= bensinObject1.posYben[1] && characterObject1.charaPosY[1] >= bensinObject1.posYben[1])) ||
+            ((characterObject1.charaPosX[0] >= bensinObject1.posXben[0] && characterObject1.charaPosX[0] <= bensinObject1.posXben[1]) && (characterObject1.charaPosY[1] <= bensinObject1.posYben[0] && characterObject1.charaPosY[1] >= bensinObject1.posYben[1]))
             )
     {
-        particleMuncul = true;
+        bensinObject1.particleMuncul = true;
 
-        if (destroyBensin == false)
+        if (bensinObject1.destroyBensin == false)
         {
-            destroyBensin = true;
+            bensinObject1.destroyBensin = true;
             bensin += 10;
             if (bensin >= 100)
             {
@@ -904,17 +617,17 @@ void mainBensinColliderSpawner()
     }
 
     if (
-            ((charaPosX[0] >= posXben2[0] && charaPosX[0] <= posXben2[1]) && (charaPosY[0] <= posYben2[0] && charaPosY[0] >= posYben2[1])) ||
-            ((charaPosX[1] >= posXben2[0] && charaPosX[1] <= posXben2[1]) && (charaPosY[0] <= posYben2[0] && charaPosY[0] >= posYben2[1])) ||
-            ((charaPosX[1] >= posXben2[0] && charaPosX[1] <= posXben2[1]) && (charaPosY[1] <= posYben2[1] && charaPosY[1] >= posYben2[1])) ||
-            ((charaPosX[0] >= posXben2[0] && charaPosX[0] <= posXben2[1]) && (charaPosY[1] <= posYben2[0] && charaPosY[1] >= posYben2[1]))
+            ((characterObject1.charaPosX[0] >= bensinObject2.posXben[0] && characterObject1.charaPosX[0] <= bensinObject2.posXben[1]) && (characterObject1.charaPosY[0] <= bensinObject2.posYben2[0] && characterObject1.charaPosY[0] >= bensinObject2.posYben2[1])) ||
+            ((characterObject1.charaPosX[1] >= bensinObject2.posXben[0] && characterObject1.charaPosX[1] <= bensinObject2.posXben[1]) && (characterObject1.charaPosY[0] <= bensinObject2.posYben2[0] && characterObject1.charaPosY[0] >= bensinObject2.posYben2[1])) ||
+            ((characterObject1.charaPosX[1] >= bensinObject2.posXben[0] && characterObject1.charaPosX[1] <= bensinObject2.posXben[1]) && (characterObject1.charaPosY[1] <= bensinObject2.posYben2[1] && characterObject1.charaPosY[1] >= bensinObject2.posYben2[1])) ||
+            ((characterObject1.charaPosX[0] >= bensinObject2.posXben[0] && characterObject1.charaPosX[0] <= bensinObject2.posXben[1]) && (characterObject1.charaPosY[1] <= bensinObject2.posYben2[0] && characterObject1.charaPosY[1] >= bensinObject2.posYben2[1]))
             )
     {
-        particleMuncul2 = true;
+        bensinObject2.particleMuncul = true;
 
-        if (destroyBensin2 == false)
+        if (bensinObject2.destroyBensin == false)
         {
-            destroyBensin2 = true;
+            bensinObject2.destroyBensin = true;
             bensin += 10;
             if (bensin >= 100)
             {
@@ -925,60 +638,61 @@ void mainBensinColliderSpawner()
         }
     }
 
-    if (particleMuncul == true)
+    if (bensinObject1.particleMuncul == true)
     {
-        ms = 0.5;
+        bensinObject1.ms = 0.5;
 
-        float posX_particle = posXben[0]-10;
-        float posY_particle = posYben[1];
+        float posX_particle = bensinObject1.posXben[0]-10;
+        float posY_particle = bensinObject1.posYben[1];
 
         glPushMatrix();
         glTranslatef(posX_particle,posY_particle,0);
-        particleEffectBensinSpawner();
+        bensinObject1.particleEffectBensinSpawner();
         glPopMatrix();
     }
-    else if (particleMuncul == false)
+    else if (bensinObject1.particleMuncul == false)
     {
-        particleAtas = 0;
-        particleBawah = 0;
-        particleKanan = 0;
-        particleKiri = 0;
-        opacityParticle = 255;
+        bensinObject1.particleAtas = 0;
+        bensinObject1.particleBawah = 0;
+        bensinObject1.particleKanan = 0;
+        bensinObject1.particleKiri = 0;
 
-        ms = 0;
+        bensinObject1.opacityParticle = 255;
+
+        bensinObject1.ms = 0;
     }
 
-    if (opacityParticle <= 0)
+    if (bensinObject1.opacityParticle <= 0)
     {
-        particleMuncul = false;
+        bensinObject1.particleMuncul = false;
     }
 
-        if (particleMuncul2 == true)
+    if (bensinObject2.particleMuncul == true)
     {
-        ms2 = 0.5;
+        bensinObject2.ms = 0.5;
 
-        float posX_particle2 = posXben2[0]-10;
-        float posY_particle2 = posYben2[1];
+        float posX_particle = bensinObject2.posXben[0]-10;
+        float posY_particle = bensinObject2.posYben2[1];
 
         glPushMatrix();
-        glTranslatef(posX_particle2,posY_particle2,0);
-        particleEffectBensinSpawner2();
+        glTranslatef(posX_particle,posY_particle,0);
+        bensinObject2.particleEffectBensinSpawner();
         glPopMatrix();
     }
-    else if (particleMuncul2 == false)
+    else if (bensinObject2.particleMuncul == false)
     {
-        particleAtas2 = 0;
-        particleBawah2 = 0;
-        particleKanan2 = 0;
-        particleKiri2 = 0;
-        opacityParticle2 = 255;
+        bensinObject2.particleAtas = 0;
+        bensinObject2.particleBawah = 0;
+        bensinObject2.particleKanan = 0;
+        bensinObject2.particleKiri = 0;
+        bensinObject2.opacityParticle = 255;
 
-        ms2 = 0;
+        bensinObject2.ms = 0;
     }
 
-    if (opacityParticle2 <= 0)
+    if (bensinObject2.opacityParticle <= 0)
     {
-        particleMuncul2 = false;
+        bensinObject2.particleMuncul = false;
     }
 
     if (bensin <= 0)
@@ -991,58 +705,58 @@ void mainBensinColliderSpawner()
 
 void mainEnemyA_colliderSpawner()
 {
-    posXenemyA[0] = 62;
-    posXenemyA[1] = 99;
-    colliderEnemyA();
+    enemyCollider1.posXenemyA[0] = 62;
+    enemyCollider1.posXenemyA[1] = 99;
+    enemyCollider1.colliderEnemyA();
 
-    if (posYenemyA[0] <= 0)
+    if (enemyCollider1.posYenemyA[0] <= 0)
     {
-        posYenemyA[0] += 740*2;
-        posYenemyA[1] += 740*2;
+        enemyCollider1.posYenemyA[0] += 740*2;
+        enemyCollider1.posYenemyA[1] += 740*2;
     }
 
-    posXenemyA2[0] = 242;
-    posXenemyA2[1] = 280;
-    colliderEnemyA2();
+    enemyCollider2.posXenemyA[0] = 242;
+    enemyCollider2.posXenemyA[1] = 280;
+    enemyCollider2.colliderEnemyA();
 
-    if (posYenemyA2[0] <= 0)
+    if (enemyCollider2.posYenemyA2[0] <= 0)
     {
-        posYenemyA2[0] += 740*2;
-        posYenemyA2[1] += 740*2;
+        enemyCollider2.posYenemyA2[0] += 740*2;
+        enemyCollider2.posYenemyA2[1] += 740*2;
     }
     //Fungsi Collision player and colliderEnemyA
     if ((
-            ((charaPosX[0] >= posXenemyA[0] && charaPosX[0] <= posXenemyA[1]) && (charaPosY[0] <= posYenemyA[0] && charaPosY[0] >= posYenemyA[1])) ||
-            ((charaPosX[1] >= posXenemyA[0] && charaPosX[1] <= posXenemyA[1]) && (charaPosY[0] <= posYenemyA[0] && charaPosY[0] >= posYenemyA[1])) ||
-            ((charaPosX[1] >= posXenemyA[0]&& charaPosX[1] <= posXenemyA[1]) && (charaPosY[1] <= posYenemyA[0] && charaPosY[1] >= posYenemyA[1])) ||
-            ((charaPosX[0] >= posXenemyA[0] && charaPosX[0] <= posXenemyA[1]) && (charaPosY[1] <= posYenemyA[0] && charaPosY[1] >= posYenemyA[1]))
+            ((characterObject1.charaPosX[0] >= enemyCollider1.posXenemyA[0] && characterObject1.charaPosX[0] <= enemyCollider1.posXenemyA[1]) && (characterObject1.charaPosY[0] <= enemyCollider1.posYenemyA[0] && characterObject1.charaPosY[0] >= enemyCollider1.posYenemyA[1])) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider1.posXenemyA[0] && characterObject1.charaPosX[1] <= enemyCollider1.posXenemyA[1]) && (characterObject1.charaPosY[0] <= enemyCollider1.posYenemyA[0] && characterObject1.charaPosY[0] >= enemyCollider1.posYenemyA[1])) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider1.posXenemyA[0] && characterObject1.charaPosX[1] <= enemyCollider1.posXenemyA[1]) && (characterObject1.charaPosY[1] <= enemyCollider1.posYenemyA[0] && characterObject1.charaPosY[1] >= enemyCollider1.posYenemyA[1])) ||
+            ((characterObject1.charaPosX[0] >= enemyCollider1.posXenemyA[0] && characterObject1.charaPosX[0] <= enemyCollider1.posXenemyA[1]) && (characterObject1.charaPosY[1] <= enemyCollider1.posYenemyA[0] && characterObject1.charaPosY[1] >= enemyCollider1.posYenemyA[1]))
         ) && (dmgCooldown <= 0))
     {
         particleEffectCharacter1.particleMuncul = true;
 
         resetDmgCooldown();
-        damageUngu();
+        bensin -= 10;
     }
     //Fungsi Collision player and colliderEnemyA2
     if ((
-            ((charaPosX[0] >= posXenemyA2[0] && charaPosX[0] <= posXenemyA2[1] ) && (charaPosY[0] <= posYenemyA2[0]  && charaPosY[0] >= posYenemyA2[1] )) ||
-            ((charaPosX[1] >= posXenemyA2[0] && charaPosX[1] <= posXenemyA2[1] ) && (charaPosY[0] <= posYenemyA2[0]  && charaPosY[0] >= posYenemyA2[1] )) ||
-            ((charaPosX[1] >= posXenemyA[0]&& charaPosX[1] <= posXenemyA2[1] ) && (charaPosY[1] <= posYenemyA2[0]  && charaPosY[1] >= posYenemyA2[1] )) ||
-            ((charaPosX[0] >= posXenemyA2[0] && charaPosX[0] <= posXenemyA2[1] ) && (charaPosY[1] <= posYenemyA2[0]  && charaPosY[1] >= posYenemyA2[1] ))
+            ((characterObject1.charaPosX[0] >= enemyCollider2.posXenemyA[0] && characterObject1.charaPosX[0] <= enemyCollider2.posXenemyA[1] ) && (characterObject1.charaPosY[0] <= enemyCollider2.posYenemyA2[0]  && characterObject1.charaPosY[0] >= enemyCollider2.posYenemyA2[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider2.posXenemyA[0] && characterObject1.charaPosX[1] <= enemyCollider2.posXenemyA[1] ) && (characterObject1.charaPosY[0] <= enemyCollider2.posYenemyA2[0]  && characterObject1.charaPosY[0] >= enemyCollider2.posYenemyA2[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider2.posXenemyA[0] && characterObject1.charaPosX[1] <= enemyCollider2.posXenemyA[1] ) && (characterObject1.charaPosY[1] <= enemyCollider2.posYenemyA2[0]  && characterObject1.charaPosY[1] >= enemyCollider2.posYenemyA2[1] )) ||
+            ((characterObject1.charaPosX[0] >= enemyCollider2.posXenemyA[0] && characterObject1.charaPosX[0] <= enemyCollider2.posXenemyA[1] ) && (characterObject1.charaPosY[1] <= enemyCollider2.posYenemyA2[0]  && characterObject1.charaPosY[1] >= enemyCollider2.posYenemyA2[1] ))
         ) && (dmgCooldown <= 0))
     {
         particleEffectCharacter2.particleMuncul = true;
 
         resetDmgCooldown();
-        damageUngu();
+        bensin -= 10;
     }
 
     if (particleEffectCharacter1.particleMuncul == true)
     {
         particleEffectCharacter1.msPartChara = 0.5;
 
-        float posXpart_chara = ((posXenemyA[1] - posXenemyA[0]) / 2 ) + posXenemyA[0];
-        float posYpart_chara = ((posYenemyA[1] - posYenemyA[0]) / 2 ) + posYenemyA[0];
+        float posXpart_chara = ((enemyCollider1.posXenemyA[1] - enemyCollider1.posXenemyA[0]) / 2 ) + enemyCollider1.posXenemyA[0];
+        float posYpart_chara = ((enemyCollider1.posYenemyA[1] - enemyCollider1.posYenemyA[0]) / 2 ) + enemyCollider1.posYenemyA[0];
 
         glPushMatrix();
         glTranslatef(posXpart_chara,posYpart_chara,0);
@@ -1070,8 +784,8 @@ void mainEnemyA_colliderSpawner()
     {
         particleEffectCharacter2.msPartChara = 0.5;
 
-        float posXpart_chara = ((posXenemyA2[1] - posXenemyA2[0]) / 2 ) + posXenemyA2[0];
-        float posYpart_chara = ((posYenemyA2[1] - posYenemyA2[0]) / 2 ) + posYenemyA2[0];
+        float posXpart_chara = ((enemyCollider2.posXenemyA[1] - enemyCollider2.posXenemyA[0]) / 2 ) + enemyCollider2.posXenemyA[0];
+        float posYpart_chara = ((enemyCollider2.posYenemyA2[1] - enemyCollider2.posYenemyA2[0]) / 2 ) + enemyCollider2.posYenemyA2[0];
 
         glPushMatrix();
         glTranslatef(posXpart_chara,posYpart_chara,0);
@@ -1097,91 +811,213 @@ void mainEnemyA_colliderSpawner()
 
 void mainEnemyB_colliderSpawner()
 {
-    posXenemyB[0] = 48;
-    posXenemyB[1] = 79;
-    colliderEnemyB();
+    enemyCollider1.posXenemyB[0] = 48;
+    enemyCollider1.posXenemyB[1] = 79;
+    enemyCollider1.colliderEnemyB();
 
-    if (posYenemyB[0] <= 100)
+    if (enemyCollider1.posYenemyB[0] <= 100)
     {
-        posYenemyB[0] += 250*2;
-        posYenemyB[1] += 250*2;
+        enemyCollider1.posYenemyB[0] += 250*2;
+        enemyCollider1.posYenemyB[1] += 250*2;
     }
 
-    posXenemyB2[0] = 210;
-    posXenemyB2[1] = 240;
-    colliderEnemyB2();
+    enemyCollider2.posXenemyB[0] = 210;
+    enemyCollider2.posXenemyB[1] = 240;
+    enemyCollider2.colliderEnemyB();
 
-    if (posYenemyB2[0] <= 100)
+    if (enemyCollider2.posYenemyB2[0] <= 100)
     {
-        posYenemyB2[0] += 250*2;
-        posYenemyB2[1] += 250*2;
+        enemyCollider2.posYenemyB2[0] += 250*2;
+        enemyCollider2.posYenemyB2[1] += 250*2;
     }
     //Fungsi Collision player and colliderEnemyB
     if ((
-            ((charaPosX[0] >= posXenemyB[0] && charaPosX[0] <= posXenemyB[1] ) && (charaPosY[0] <= posYenemyB[0]  && charaPosY[0] >= posYenemyB[1] )) ||
-            ((charaPosX[1] >= posXenemyB[0] && charaPosX[1] <= posXenemyB[1] ) && (charaPosY[0] <= posYenemyB[0]  && charaPosY[0] >= posYenemyB[1] )) ||
-            ((charaPosX[1] >= posXenemyB[0] && charaPosX[1] <= posXenemyB[1] ) && (charaPosY[1] <= posYenemyB[0]  && charaPosY[1] >= posYenemyB[1] )) ||
-            ((charaPosX[0] >= posXenemyB[0] && charaPosX[0] <= posXenemyB[1] ) && (charaPosY[1] <= posYenemyB[0]  && charaPosY[1] >= posYenemyB[1] ))
+            ((characterObject1.charaPosX[0] >= enemyCollider1.posXenemyB[0] && characterObject1.charaPosX[0] <= enemyCollider1.posXenemyB[1] ) && (characterObject1.charaPosY[0] <= enemyCollider1.posYenemyB[0]  && characterObject1.charaPosY[0] >= enemyCollider1.posYenemyB[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider1.posXenemyB[0] && characterObject1.charaPosX[1] <= enemyCollider1.posXenemyB[1] ) && (characterObject1.charaPosY[0] <= enemyCollider1.posYenemyB[0]  && characterObject1.charaPosY[0] >= enemyCollider1.posYenemyB[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider1.posXenemyB[0] && characterObject1.charaPosX[1] <= enemyCollider1.posXenemyB[1] ) && (characterObject1.charaPosY[1] <= enemyCollider1.posYenemyB[0]  && characterObject1.charaPosY[1] >= enemyCollider1.posYenemyB[1] )) ||
+            ((characterObject1.charaPosX[0] >= enemyCollider1.posXenemyB[0] && characterObject1.charaPosX[0] <= enemyCollider1.posXenemyB[1] ) && (characterObject1.charaPosY[1] <= enemyCollider1.posYenemyB[0]  && characterObject1.charaPosY[1] >= enemyCollider1.posYenemyB[1] ))
         ) && (dmgCooldown <= 0))
     {
+        particleEffectCharacter3.particleMuncul = true;
+
         resetDmgCooldown();
-        damageIjo();
+        bensin -= 5;
     }
     //Fungsi Collision player and colliderEnemyB2
     if ((
-            ((charaPosX[0] >= posXenemyB2[0] && charaPosX[0] <= posXenemyB2[1] ) && (charaPosY[0] <= posYenemyB2[0]  && charaPosY[0] >= posYenemyB2[1] )) ||
-            ((charaPosX[1] >= posXenemyB2[0] && charaPosX[1] <= posXenemyB2[1] ) && (charaPosY[0] <= posYenemyB2[0]  && charaPosY[0] >= posYenemyB2[1] )) ||
-            ((charaPosX[1] >= posXenemyB2[0] && charaPosX[1] <= posXenemyB2[1] ) && (charaPosY[1] <= posYenemyB2[0]  && charaPosY[1] >= posYenemyB2[1] )) ||
-            ((charaPosX[0] >= posXenemyB2[0] && charaPosX[0] <= posXenemyB2[1] ) && (charaPosY[1] <= posYenemyB2[0]  && charaPosY[1] >= posYenemyB2[1] ))
+            ((characterObject1.charaPosX[0] >= enemyCollider2.posXenemyB[0] && characterObject1.charaPosX[0] <= enemyCollider2.posXenemyB[1] ) && (characterObject1.charaPosY[0] <= enemyCollider2.posYenemyB2[0]  && characterObject1.charaPosY[0] >= enemyCollider2.posYenemyB2[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider2.posXenemyB[0] && characterObject1.charaPosX[1] <= enemyCollider2.posXenemyB[1] ) && (characterObject1.charaPosY[0] <= enemyCollider2.posYenemyB2[0]  && characterObject1.charaPosY[0] >= enemyCollider2.posYenemyB2[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider2.posXenemyB[0] && characterObject1.charaPosX[1] <= enemyCollider2.posXenemyB[1] ) && (characterObject1.charaPosY[1] <= enemyCollider2.posYenemyB2[0]  && characterObject1.charaPosY[1] >= enemyCollider2.posYenemyB2[1] )) ||
+            ((characterObject1.charaPosX[0] >= enemyCollider2.posXenemyB[0] && characterObject1.charaPosX[0] <= enemyCollider2.posXenemyB[1] ) && (characterObject1.charaPosY[1] <= enemyCollider2.posYenemyB2[0]  && characterObject1.charaPosY[1] >= enemyCollider2.posYenemyB2[1] ))
         ) && (dmgCooldown <= 0))
     {
+        particleEffectCharacter4.particleMuncul = true;
+
         resetDmgCooldown();
-        damageIjo();
+        bensin -= 5;
+    }
+
+    //===================== kondisi particle 3 ========================
+    if (particleEffectCharacter3.particleMuncul == true)
+    {
+        particleEffectCharacter3.msPartChara = 0.5;
+
+        float posXpart_chara = ((enemyCollider1.posXenemyB[1] - enemyCollider1.posXenemyB[0]) / 2 ) + enemyCollider1.posXenemyB[0];
+        float posYpart_chara = ((enemyCollider1.posYenemyB[1] - enemyCollider1.posYenemyB[0]) / 2 ) + enemyCollider1.posYenemyB[0];
+
+        glPushMatrix();
+        glTranslatef(posXpart_chara,posYpart_chara,0);
+        particleEffectCharacter3.ParticleEffectCharacterSpawner();
+        glPopMatrix();
+    }
+    else if (particleEffectCharacter3.particleMuncul == false)
+    {
+        particleEffectCharacter3.particleAtasCharacter = 0;
+        particleEffectCharacter3.particleBawahCharacter = 0;
+        particleEffectCharacter3.particleKananCharacter = 0;
+        particleEffectCharacter3.particleKiriCharacter = 0;
+
+        particleEffectCharacter3.opacityParticleCharacter = 255;
+        particleEffectCharacter3.msPartChara = 0;
+    }
+
+    if (particleEffectCharacter3.opacityParticleCharacter <= 0)
+    {
+        particleEffectCharacter3.particleMuncul = false;
+    }
+
+    //===================== kondisi particle 4 ========================
+    if (particleEffectCharacter4.particleMuncul == true)
+    {
+        particleEffectCharacter4.msPartChara = 0.5;
+
+        float posXpart_chara = ((enemyCollider2.posXenemyB[1] - enemyCollider2.posXenemyB[0]) / 2 ) + enemyCollider2.posXenemyB[0];
+        float posYpart_chara = ((enemyCollider2.posYenemyB2[1] - enemyCollider2.posYenemyB2[0]) / 2 ) + enemyCollider2.posYenemyB2[0];
+
+        glPushMatrix();
+        glTranslatef(posXpart_chara,posYpart_chara,0);
+        particleEffectCharacter4.ParticleEffectCharacterSpawner();
+        glPopMatrix();
+    }
+    else if (particleEffectCharacter4.particleMuncul == false)
+    {
+        particleEffectCharacter4.particleAtasCharacter = 0;
+        particleEffectCharacter4.particleBawahCharacter = 0;
+        particleEffectCharacter4.particleKananCharacter = 0;
+        particleEffectCharacter4.particleKiriCharacter = 0;
+
+        particleEffectCharacter4.opacityParticleCharacter = 255;
+        particleEffectCharacter4.msPartChara = 0;
+    }
+
+    if (particleEffectCharacter4.opacityParticleCharacter <= 0)
+    {
+        particleEffectCharacter4.particleMuncul = false;
     }
 }
 
 void mainEnemyC_colliderSpawner()
 {
-    posXenemyC[0] = 102;
-    posXenemyC[1] = 138;
-    colliderEnemyC();
+    enemyCollider1.posXenemyC[0] = 102;
+    enemyCollider1.posXenemyC[1] = 138;
+    enemyCollider1.colliderEnemyC();
 
-    if (posYenemyC[0] <= 0)
+    if (enemyCollider1.posYenemyC[0] <= 0)
     {
-        posYenemyC[0] += 450*2;
-        posYenemyC[1] += 450*2;
+        enemyCollider1.posYenemyC[0] += 450*2;
+        enemyCollider1.posYenemyC[1] += 450*2;
     }
 
-    posXenemyC2[0] = 175;
-    posXenemyC2[1] = 215;
-    colliderEnemyC2();
+    enemyCollider2.posXenemyC[0] = 175;
+    enemyCollider2.posXenemyC[1] = 215;
+    enemyCollider2.colliderEnemyC();
 
-    if (posYenemyC2[0] <= 0)
+    if (enemyCollider2.posYenemyC2[0] <= 0)
     {
-        posYenemyC2[0] += 450*2;
-        posYenemyC2[1] += 450*2;
+        enemyCollider2.posYenemyC2[0] += 450*2;
+        enemyCollider2.posYenemyC2[1] += 450*2;
     }
     //Fungsi Collision player and colliderEnemyC
     if ((
-            ((charaPosX[0] >= posXenemyC[0] && charaPosX[0] <= posXenemyC[1] ) && (charaPosY[0] <= posYenemyC[0]  && charaPosY[0] >= posYenemyC[1] )) ||
-            ((charaPosX[1] >= posXenemyC[0] && charaPosX[1] <= posXenemyC[1] ) && (charaPosY[0] <= posYenemyC[0]  && charaPosY[0] >= posYenemyC[1] )) ||
-            ((charaPosX[1] >= posXenemyC[0] && charaPosX[1] <= posXenemyC[1] ) && (charaPosY[1] <= posYenemyC[0]  && charaPosY[1] >= posYenemyC[1] )) ||
-            ((charaPosX[0] >= posXenemyC[0] && charaPosX[0] <= posXenemyC[1] ) && (charaPosY[1] <= posYenemyC[0]  && charaPosY[1] >= posYenemyC[1] ))
+            ((characterObject1.charaPosX[0] >= enemyCollider1.posXenemyC[0] && characterObject1.charaPosX[0] <= enemyCollider1.posXenemyC[1] ) && (characterObject1.charaPosY[0] <= enemyCollider1.posYenemyC[0]  && characterObject1.charaPosY[0] >= enemyCollider1.posYenemyC[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider1.posXenemyC[0] && characterObject1.charaPosX[1] <= enemyCollider1.posXenemyC[1] ) && (characterObject1.charaPosY[0] <= enemyCollider1.posYenemyC[0]  && characterObject1.charaPosY[0] >= enemyCollider1.posYenemyC[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider1.posXenemyC[0] && characterObject1.charaPosX[1] <= enemyCollider1.posXenemyC[1] ) && (characterObject1.charaPosY[1] <= enemyCollider1.posYenemyC[0]  && characterObject1.charaPosY[1] >= enemyCollider1.posYenemyC[1] )) ||
+            ((characterObject1.charaPosX[0] >= enemyCollider1.posXenemyC[0] && characterObject1.charaPosX[0] <= enemyCollider1.posXenemyC[1] ) && (characterObject1.charaPosY[1] <= enemyCollider1.posYenemyC[0]  && characterObject1.charaPosY[1] >= enemyCollider1.posYenemyC[1] ))
         ) && (dmgCooldown <= 0))
     {
+        particleEffectCharacter5.particleMuncul = true;
+
         resetDmgCooldown();
-        damageOren();
+        bensin -= 15;
     }
     //Fungsi Collision player and colliderEnemyC2
     if ((
-            ((charaPosX[0] >= posXenemyC2[0] && charaPosX[0] <= posXenemyC2[1] ) && (charaPosY[0] <= posYenemyC2[0]  && charaPosY[0] >= posYenemyC2[1] )) ||
-            ((charaPosX[1] >= posXenemyC2[0] && charaPosX[1] <= posXenemyC2[1] ) && (charaPosY[0] <= posYenemyC2[0]  && charaPosY[0] >= posYenemyC2[1] )) ||
-            ((charaPosX[1] >= posXenemyC2[0] && charaPosX[1] <= posXenemyC2[1] ) && (charaPosY[1] <= posYenemyC2[0]  && charaPosY[1] >= posYenemyC2[1] )) ||
-            ((charaPosX[0] >= posXenemyC2[0] && charaPosX[0] <= posXenemyC2[1] ) && (charaPosY[1] <= posYenemyC2[0]  && charaPosY[1] >= posYenemyC2[1] ))
+            ((characterObject1.charaPosX[0] >= enemyCollider2.posXenemyC[0] && characterObject1.charaPosX[0] <= enemyCollider2.posXenemyC[1] ) && (characterObject1.charaPosY[0] <= enemyCollider2.posYenemyC2[0]  && characterObject1.charaPosY[0] >= enemyCollider2.posYenemyC2[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider2.posXenemyC[0] && characterObject1.charaPosX[1] <= enemyCollider2.posXenemyC[1] ) && (characterObject1.charaPosY[0] <= enemyCollider2.posYenemyC2[0]  && characterObject1.charaPosY[0] >= enemyCollider2.posYenemyC2[1] )) ||
+            ((characterObject1.charaPosX[1] >= enemyCollider2.posXenemyC[0] && characterObject1.charaPosX[1] <= enemyCollider2.posXenemyC[1] ) && (characterObject1.charaPosY[1] <= enemyCollider2.posYenemyC2[0]  && characterObject1.charaPosY[1] >= enemyCollider2.posYenemyC2[1] )) ||
+            ((characterObject1.charaPosX[0] >= enemyCollider2.posXenemyC[0] && characterObject1.charaPosX[0] <= enemyCollider2.posXenemyC[1] ) && (characterObject1.charaPosY[1] <= enemyCollider2.posYenemyC2[0]  && characterObject1.charaPosY[1] >= enemyCollider2.posYenemyC2[1] ))
         ) && (dmgCooldown <= 0))
     {
+        particleEffectCharacter6.particleMuncul = true;
+
         resetDmgCooldown();
-        damageOren();
+        bensin -= 15;
+    }
+
+    //===================== kondisi particle 5 ========================
+    if (particleEffectCharacter5.particleMuncul == true)
+    {
+        particleEffectCharacter5.msPartChara = 0.5;
+
+        float posXpart_chara = ((enemyCollider1.posXenemyC[1] - enemyCollider1.posXenemyC[0]) / 2 ) + enemyCollider1.posXenemyC[0];
+        float posYpart_chara = ((enemyCollider1.posYenemyC[1] - enemyCollider1.posYenemyC[0]) / 2 ) + enemyCollider1.posYenemyC[0];
+
+        glPushMatrix();
+        glTranslatef(posXpart_chara,posYpart_chara,0);
+        particleEffectCharacter5.ParticleEffectCharacterSpawner();
+        glPopMatrix();
+    }
+    else if (particleEffectCharacter5.particleMuncul == false)
+    {
+        particleEffectCharacter5.particleAtasCharacter = 0;
+        particleEffectCharacter5.particleBawahCharacter = 0;
+        particleEffectCharacter5.particleKananCharacter = 0;
+        particleEffectCharacter5.particleKiriCharacter = 0;
+
+        particleEffectCharacter5.opacityParticleCharacter = 255;
+        particleEffectCharacter5.msPartChara = 0;
+    }
+    if (particleEffectCharacter5.opacityParticleCharacter <= 0)
+    {
+        particleEffectCharacter5.particleMuncul = false;
+    }
+
+    //===================== kondisi particle 6 ========================
+    if (particleEffectCharacter6.particleMuncul == true)
+    {
+        particleEffectCharacter6.msPartChara = 0.5;
+
+        float posXpart_chara = ((enemyCollider2.posXenemyC[1] - enemyCollider2.posXenemyC[0]) / 2 ) + enemyCollider2.posXenemyC[0];
+        float posYpart_chara = ((enemyCollider2.posYenemyC2[1] - enemyCollider2.posYenemyC2[0]) / 2 ) + enemyCollider2.posYenemyC2[0];
+
+        glPushMatrix();
+        glTranslatef(posXpart_chara,posYpart_chara,0);
+        particleEffectCharacter6.ParticleEffectCharacterSpawner();
+        glPopMatrix();
+    }
+    else if (particleEffectCharacter6.particleMuncul == false)
+    {
+        particleEffectCharacter6.particleAtasCharacter = 0;
+        particleEffectCharacter6.particleBawahCharacter = 0;
+        particleEffectCharacter6.particleKananCharacter = 0;
+        particleEffectCharacter6.particleKiriCharacter = 0;
+
+        particleEffectCharacter6.opacityParticleCharacter = 255;
+        particleEffectCharacter6.msPartChara = 0;
+    }
+    if (particleEffectCharacter6.opacityParticleCharacter <= 0)
+    {
+        particleEffectCharacter6.particleMuncul = false;
     }
 }
 
@@ -1205,14 +1041,12 @@ void displayMe()
     mainBensinColliderSpawner();
     mainBensinSpawner();
 
-    colliderCharacter();
+    characterObject1.colliderCharacter();
     mainCharacterMove();
 
-    bensinBarView();
-
+    game_ui.bensinBarView(bensin);
     sprintf(cetakScore, "%d", scoreChara);
-
-    drawText(20,615, cetakScore);
+    game_ui.drawText(20,615, cetakScore);
 
     glFlush();
     glutSwapBuffers();
@@ -1241,13 +1075,12 @@ int main(int argc, char** argv)
     glutTimerFunc(1,characterMovement,0);
     glutTimerFunc(1,bintangMovement,0);
     glutTimerFunc(1,bensinMovement,0);
-    glutTimerFunc(1,scoreCharacter,0);
+    glutTimerFunc(1,gameUI_timer,0);
     glutTimerFunc(1,enemyA_Movement,0);
     glutTimerFunc(1,enemyB_Movement,0);
     glutTimerFunc(1,enemyC_Movement,0);
     glutTimerFunc(1,particleEffectBensinTimer,0);
-    glutTimerFunc(1,particleEffectBensinTimer2,0);
-    glutTimerFunc(1,animasiBensin,0);
+    glutTimerFunc(1,animasiObject,0);
     glutTimerFunc(1,particleEffectCharacterTimer,0);
 
     myinit();

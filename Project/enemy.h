@@ -1,6 +1,9 @@
 class EnemyObjectClass
 {
 public:
+
+    bool animasiEnemyDamaged = false;
+
     void enemyAobject()
     {
         glBegin(GL_QUADS);
@@ -96,10 +99,14 @@ public:
         glEnd();
     }
 
+    float colorEnemyB1[3] = {14,112,58};
+    float colorEnemyB2[3] = {0,115,76};
+
     void enemyBobject()
     {
         glBegin(GL_QUADS);
-        glColor3ub(14,112,58);
+
+        glColor3ub(colorEnemyB1[0],colorEnemyB1[1],colorEnemyB1[2]);
 
         glVertex2f(-6,11.5);
         glVertex2f(6,11.5);
@@ -136,7 +143,8 @@ public:
         glVertex2f(-9.5,-11.5);
         glVertex2f(-16,-11.5);
 
-        glColor3ub(0,115,76);
+        glColor3ub(colorEnemyB2[0],colorEnemyB2[1],colorEnemyB2[2]);
+
         glVertex2f(-6,8.5);
         glVertex2f(11,8.5);
         glVertex2f(11,6);
@@ -338,3 +346,57 @@ public:
     }
 };
 
+class EnemyColliderClass
+{
+public:
+    float posXenemyA[2];
+    float posYenemyA[2] = {850,820};
+    float posYenemyA2[2] = {850+740,820+740};
+
+    float posXenemyB[2];
+    float posYenemyB[2] = {515,485};
+    float posYenemyB2[2] = {515+250,485+250};;
+
+    float posXenemyC[2];
+    float posYenemyC[2] = {660,620};
+    float posYenemyC2[2] = {660+450,620+450};
+
+    void colliderEnemyA()
+    {
+        glPushMatrix();
+        glBegin(GL_POLYGON);
+        glColor4ub(255,255,255,0);
+            glVertex2f(posXenemyA[0],posYenemyA[0]);
+            glVertex2f(posXenemyA[1],posYenemyA[0]);
+            glVertex2f(posXenemyA[1],posYenemyA[1]);
+            glVertex2f(posXenemyA[0],posYenemyA[1]);
+        glEnd();
+        glPopMatrix();
+    }
+
+    void colliderEnemyB()
+    {
+        glPushMatrix();
+        glBegin(GL_POLYGON);
+        glColor4ub(255,255,255,0);
+            glVertex2f(posXenemyB[0],posYenemyB[0]);
+            glVertex2f(posXenemyB[1],posYenemyB[0]);
+            glVertex2f(posXenemyB[1],posYenemyB[1]);
+            glVertex2f(posXenemyB[0],posYenemyB[1]);
+        glEnd();
+        glPopMatrix();
+    }
+
+    void colliderEnemyC()
+    {
+        glPushMatrix();
+        glBegin(GL_POLYGON);
+        glColor4ub(255,255,255,0);
+            glVertex2f(posXenemyC[0],posYenemyC[0]);
+            glVertex2f(posXenemyC[1],posYenemyC[0]);
+            glVertex2f(posXenemyC[1],posYenemyC[1]);
+            glVertex2f(posXenemyC[0],posYenemyC[1]);
+        glEnd();
+        glPopMatrix();
+    }
+};

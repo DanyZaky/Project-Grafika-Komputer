@@ -230,7 +230,7 @@
 1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
 	<_mingw.h>
 
-1608811634 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
+1608837752 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
 	<iostream>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -238,13 +238,13 @@
 	<math.h>
 	<windows.h>
 	<stdio.h>
-	<fstream>
 	"character.h"
 	"character-fire.h"
 	"bensin.h"
 	"bintang.h"
 	"enemy.h"
 	"particle-effect-character-damaged.h"
+	"game-ui.h"
 
 1607098850 d:\github\grafkom\project-grafika-komputer\project\karakter.h
 
@@ -271,11 +271,11 @@
 
 1608441143 d:\github\grafkom\project-grafika-komputer\project\bintang.h
 
-1608441143 d:\github\grafkom\project-grafika-komputer\project\bensin.h
+1608837698 d:\github\grafkom\project-grafika-komputer\project\bensin.h
 
 1607098850 d:\github\grafkom\project-grafika-komputer\project\animasiapi.h
 
-1608441143 d:\github\grafkom\project-grafika-komputer\project\character.h
+1608831990 d:\github\grafkom\project-grafika-komputer\project\character.h
 
 1608441143 d:\github\grafkom\project-grafika-komputer\project\character-fire.h
 
@@ -285,7 +285,7 @@
 
 1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\character-fire.h
 
-1608441143 d:\github\grafkom\project-grafika-komputer\project\enemy.h
+1608837617 d:\github\grafkom\project-grafika-komputer\project\enemy.h
 
 1608541926 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\character.h
 
@@ -356,4 +356,6 @@
 	<stddef.h>
 
 1608811725 d:\github\grafkom\project-grafika-komputer\project\particle-effect-character-damaged.h
+
+1608835195 d:\github\grafkom\project-grafika-komputer\project\game-ui.h
 

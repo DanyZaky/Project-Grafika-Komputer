@@ -47,6 +47,7 @@
 		<Unit filename="character-fire.h" />
 		<Unit filename="character.h" />
 		<Unit filename="enemy.h" />
+		<Unit filename="game-ui.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="particle-effect-character-damaged.h" />
 		<Extensions>
