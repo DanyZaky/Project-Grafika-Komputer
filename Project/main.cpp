@@ -58,14 +58,16 @@ float dmgCooldown = 5;
 //ANIMASI OBJECT
 bool membesar = false;
 float scale = 1;
-int scoreChara;
-char cetakScore[1000];
-bool gameBerjalan = true;
-bool scoreBertambah = true;
+
 
 //GAME UI
 float bensin = 100;
 bool kalah = false;
+int scoreChara;
+char cetakScore[1000];
+char cetakScore2[1000];
+bool gameBerjalan = true;
+bool scoreBertambah = true;
 
 void resetDmgCooldown()
 {
@@ -77,7 +79,7 @@ void gameUI_timer(int timer)
 {
     bensin -= 1;
 
-    if (scoreBertambah = true)
+    if (scoreBertambah == true)
     {
         scoreChara += 1;
     }
@@ -1067,9 +1069,9 @@ void loseConditionScene()
     glColor3ub(255,255,255);
     game_ui.drawText(150,340,"YOU LOSE");
     game_ui.drawText(110,325,"Your Score : ");
-    sprintf(cetakScore, "%d", scoreChara);
-    game_ui.drawText(230,325,cetakScore);
-    game_ui.drawText(75,300,"Press 'Enter' to Play Again");
+    sprintf(cetakScore2, "%d", scoreChara);
+    game_ui.drawText(230,325,cetakScore2);
+    game_ui.drawText(80,300,"Thanks for Playing ^_^");
     glPopMatrix();
 
     glFlush();
@@ -1082,19 +1084,15 @@ void sceneManager(int timer)
     {
         glutDisplayFunc(mainScene);
     }
+    if (gameBerjalan == false)
+    {
+        glutDisplayFunc(loseConditionScene);
+    }
 
     if (bensin <= 0)
     {
         gameBerjalan = false;
         scoreBertambah = false;
-        glutDisplayFunc(loseConditionScene);
-    }
-
-    if (GetAsyncKeyState(VK_UP))
-    {
-        gameBerjalan = true;
-        scoreChara = 0;
-        glutDisplayFunc(mainScene);
     }
 
     glutTimerFunc(50,sceneManager,0);
@@ -1134,5 +1132,4 @@ int main(int argc, char** argv)
 
     myinit();
     glutMainLoop();
-    return 0;
 }
