@@ -58,10 +58,12 @@ float dmgCooldown = 5;
 //ANIMASI OBJECT
 bool membesar = false;
 float scale = 1;
-
-//GAME UI
 int scoreChara;
 char cetakScore[1000];
+bool gameBerjalan = true;
+bool scoreBertambah = true;
+
+//GAME UI
 float bensin = 100;
 bool kalah = false;
 
@@ -75,7 +77,10 @@ void gameUI_timer(int timer)
 {
     bensin -= 1;
 
-    scoreChara += 1;
+    if (scoreBertambah = true)
+    {
+        scoreChara += 1;
+    }
 
     if (dmgCooldown >= 0) {dmgCooldown -= 0.5;}
     glutTimerFunc(700,gameUI_timer,0);
@@ -343,7 +348,7 @@ void mainCharacterMove()
     {
         kalah = true;
         cout<<"Kalah"<<endl;
-        bensin -= 50;
+        bensin -= 100;
     }
 }
 
@@ -1021,7 +1026,7 @@ void mainEnemyC_colliderSpawner()
     }
 }
 
-void displayMe()
+void mainScene()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.06,0.16,0.2,0);
@@ -1045,11 +1050,55 @@ void displayMe()
     mainCharacterMove();
 
     game_ui.bensinBarView(bensin);
-    sprintf(cetakScore, "%d", scoreChara);
+    sprintf(cetakScore, "%d",scoreChara);
     game_ui.drawText(20,615, cetakScore);
 
     glFlush();
     glutSwapBuffers();
+}
+
+void loseConditionScene()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.06,0.16,0.2,0);
+    glMatrixMode(GL_MODELVIEW);
+
+    glPushMatrix();
+    glColor3ub(255,255,255);
+    game_ui.drawText(150,340,"YOU LOSE");
+    game_ui.drawText(110,325,"Your Score : ");
+    sprintf(cetakScore, "%d", scoreChara);
+    game_ui.drawText(230,325,cetakScore);
+    game_ui.drawText(75,300,"Press 'Enter' to Play Again");
+    glPopMatrix();
+
+    glFlush();
+    glutSwapBuffers();
+}
+
+void sceneManager(int timer)
+{
+    if (gameBerjalan == true)
+    {
+        glutDisplayFunc(mainScene);
+    }
+
+    if (bensin <= 0)
+    {
+        gameBerjalan = false;
+        scoreBertambah = false;
+        glutDisplayFunc(loseConditionScene);
+    }
+
+    if (GetAsyncKeyState(VK_UP))
+    {
+        gameBerjalan = true;
+        scoreChara = 0;
+        glutDisplayFunc(mainScene);
+    }
+
+    glutTimerFunc(50,sceneManager,0);
+    glutPostRedisplay();
 }
 
 void myinit()
@@ -1071,7 +1120,6 @@ int main(int argc, char** argv)
     glutCreateWindow("The Rocket Man");
     gluOrtho2D(0,360,0,640);
 
-    glutDisplayFunc(displayMe);
     glutTimerFunc(1,characterMovement,0);
     glutTimerFunc(1,bintangMovement,0);
     glutTimerFunc(1,bensinMovement,0);
@@ -1082,6 +1130,7 @@ int main(int argc, char** argv)
     glutTimerFunc(1,particleEffectBensinTimer,0);
     glutTimerFunc(1,animasiObject,0);
     glutTimerFunc(1,particleEffectCharacterTimer,0);
+    glutTimerFunc(1,sceneManager,0);
 
     myinit();
     glutMainLoop();

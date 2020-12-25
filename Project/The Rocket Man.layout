@@ -2,10 +2,13 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="bintang.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="39166" topLine="973" />
 		</Cursor>
+		<Folding>
+			<Collapse line="924" />
+		</Folding>
 	</File>
 	<File name="character.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
@@ -15,45 +18,29 @@
 			<Collapse line="24" />
 		</Folding>
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="enemy.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1450" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="74" />
-			<Collapse line="85" />
-			<Collapse line="105" />
-			<Collapse line="148" />
-			<Collapse line="201" />
-			<Collapse line="210" />
-			<Collapse line="228" />
-			<Collapse line="244" />
-			<Collapse line="260" />
-			<Collapse line="298" />
-			<Collapse line="350" />
-		</Folding>
-	</File>
-	<File name="particle-effect-character-damaged.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="586" topLine="0" />
+			<Cursor1 position="9525" topLine="377" />
 		</Cursor>
 	</File>
-	<File name="game-ui.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="492" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="bensin.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="bensin.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="387" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="90" />
-		</Folding>
 	</File>
-	<File name="enemy.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="game-ui.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9525" topLine="377" />
+			<Cursor1 position="30" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="bintang.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="particle-effect-character-damaged.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="586" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -230,7 +230,7 @@
 1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
 	<_mingw.h>
 
-1608837752 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
+1608867111 source:d:\github\grafkom\project-grafika-komputer\project\main.cpp
 	<iostream>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -285,7 +285,7 @@
 
 1607237140 c:\users\irzap\onedrive\documents\prujek\project-grafika-komputer\project\character-fire.h
 
-1608837617 d:\github\grafkom\project-grafika-komputer\project\enemy.h
+1608838285 d:\github\grafkom\project-grafika-komputer\project\enemy.h
 
 1608541926 c:\users\rakhmad\desktop\grafkom\project-grafika-komputer\project\character.h
 
@@ -357,5 +357,5 @@
 
 1608811725 d:\github\grafkom\project-grafika-komputer\project\particle-effect-character-damaged.h
 
-1608835195 d:\github\grafkom\project-grafika-komputer\project\game-ui.h
+1608865700 d:\github\grafkom\project-grafika-komputer\project\game-ui.h
 
